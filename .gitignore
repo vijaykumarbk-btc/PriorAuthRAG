@@ -1,8 +1,5 @@
 .env
-venv/
-.venv/
 __pycache__/
-*.py[cod]
-*$py.class
-data/results_new/
-data/benchmark_results.json
+venv
+data/results_new
+data/result-old
