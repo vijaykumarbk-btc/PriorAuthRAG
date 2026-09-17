@@ -461,6 +461,10 @@ def scoped_search(
     direct_index_set = set(direct_indices)
 
     final_indices = complete_sibling_conditions(direct_indices, metadata)
+    if candidate_toc_ids:
+        candidate_set = set(candidate_indices)
+        final_indices = [idx for idx in final_indices if idx in candidate_set]
+
     final_indices = sorted(
         final_indices,
         key=lambda idx: metadata[idx].get("chunk_id", idx)

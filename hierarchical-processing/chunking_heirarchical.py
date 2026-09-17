@@ -4,8 +4,8 @@ import json
 
 
 
-INPUT_DIR = "/home/vijaykumar/Desktop/project2/Lumbar/output-lumbar/"
-OUTPUT_DIR = "/home/vijaykumar/Desktop/project2/Lumbar/chunks/"
+INPUT_DIR = os.getenv("CHUNKING_INPUT_DIR", "/home/vijaykumar/Desktop/project2/Lab_Management/output_tiered/")
+OUTPUT_DIR = os.getenv("CHUNKING_OUTPUT_DIR", "/home/vijaykumar/Desktop/project2/Lab_Management/chunks/")
 
 MAX_CHARS = 6000
 

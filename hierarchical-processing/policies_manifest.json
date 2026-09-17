@@ -15,6 +15,14 @@
       "metadata_file": "../Lumbar/embeddings/lumbar_fusion_metadata.json",
       "embeddings_file": "../Lumbar/embeddings/lumbar_fusion_embeddings.npy",
       "bm25_file": "../Lumbar/bm25/lumbar_fusion_bm25.pkl"
+    },
+    {
+      "doc_key": "Cigna_Lab_Management",
+      "display_name": "Cigna Laboratory Management Guidelines",
+      "toc_file": "../Lab_Management/TOC/Lab_Management_toc_output.json",
+      "metadata_file": "../Lab_Management/embeddings/lab_management_metadata.json",
+      "embeddings_file": "../Lab_Management/embeddings/lab_management_embeddings.npy",
+      "bm25_file": "../Lab_Management/bm25/lab_management_bm25.pkl"
     }
   ]
 }

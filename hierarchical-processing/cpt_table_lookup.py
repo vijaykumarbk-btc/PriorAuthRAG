@@ -74,7 +74,7 @@ class CPTTableLookup:
             "with", "does", "require", "required", "prior", "auth", "authorization", "how",
             "all", "each", "by", "from", "at", "if", "yes", "give", "documents", "document",
             "please", "tell", "about", "show", "can", "you", "would", "like", "know",
-            "under", "status", "policy"
+            "under", "status", "policy", "test", "tests", "testing", "guideline", "guidelines"
         }
         raw_words = re.findall(r"[a-z0-9]+", query.lower())
         # Filter stop words, short words, and 1-4 digit numbers (e.g. policy/chapter IDs) while preserving 5-digit CPT codes

@@ -111,29 +111,28 @@ class DocumentRegistry:
             bm25_file = next((c for c in candidates_bm25 if c.exists()), None)
             toc_file = next((c for c in candidates_toc if c.exists()), None)
 
-            if emb_file and emb_file.exists():
+            if emb_file and emb_file.exists() and toc_file and toc_file.exists():
                 doc_key = prefix
                 display_name = prefix.replace("_", " ").title()
 
                 # Attempt to extract nicer display title from TOC if available
-                if toc_file and toc_file.exists():
-                    try:
-                        with open(toc_file, "r", encoding="utf-8") as tf:
-                            tdata = json.load(tf)
-                            first_title = None
-                            for node in tdata.get("flat_toc", []):
-                                if node.get("title"):
-                                    first_title = node.get("title").strip()
-                                    break
-                            if first_title:
-                                display_name = f"{display_name} ({first_title})"
-                    except Exception:
-                        pass
+                try:
+                    with open(toc_file, "r", encoding="utf-8") as tf:
+                        tdata = json.load(tf)
+                        first_title = None
+                        for node in tdata.get("flat_toc", []):
+                            if node.get("title"):
+                                first_title = node.get("title").strip()
+                                break
+                        if first_title:
+                            display_name = f"{display_name} ({first_title})"
+                except Exception:
+                    pass
 
                 self.register_document(
                     doc_key=doc_key,
                     display_name=display_name,
-                    toc_file=str(toc_file) if toc_file else "",
+                    toc_file=str(toc_file),
                     metadata_file=str(meta_path),
                     embeddings_file=str(emb_file),
                     bm25_file=str(bm25_file) if bm25_file else ""
@@ -152,25 +151,26 @@ class DocumentRegistry:
 
         for k in target_keys:
             doc = self.documents[k]
-            lines.append(f"=== POLICY DOCUMENT: {doc['display_name']} [Key: {k}] ===")
             toc_file = doc["toc_file"]
-            if toc_file and os.path.exists(toc_file):
-                try:
-                    with open(toc_file, "r", encoding="utf-8") as f:
-                        toc_data = json.load(f)
-                    flat_toc = toc_data.get("flat_toc", [])
-                    for item in flat_toc:
-                        t_id = item.get("toc_id")
-                        title = item.get("title", "").strip()
-                        page = item.get("page")
-                        if not t_id or not title:
-                            continue
-                        level = item.get("heading_level", 1)
-                        indent = "  " * max(0, min(level - 1, 3))
-                        page_str = f" (p.{page})" if page else ""
-                        lines.append(f"{indent}[{t_id}] {title}{page_str}")
-                except Exception as e:
-                    lines.append(f"  (Error reading TOC: {e})")
+            if not toc_file or not os.path.exists(toc_file):
+                continue
+            lines.append(f"=== POLICY DOCUMENT: {doc['display_name']} [Key: {k}] ===")
+            try:
+                with open(toc_file, "r", encoding="utf-8") as f:
+                    toc_data = json.load(f)
+                flat_toc = toc_data.get("flat_toc", [])
+                for item in flat_toc:
+                    t_id = item.get("toc_id")
+                    title = item.get("title", "").strip()
+                    page = item.get("page")
+                    if not t_id or not title:
+                        continue
+                    level = item.get("heading_level", 1)
+                    indent = "  " * max(0, min(level - 1, 3))
+                    page_str = f" (p.{page})" if page else ""
+                    lines.append(f"{indent}[{t_id}] {title}{page_str}")
+            except Exception as e:
+                lines.append(f"  (Error reading TOC: {e})")
             lines.append("")
 
         return "\n".join(lines)

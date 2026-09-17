@@ -195,20 +195,68 @@ def check_master_table_prior_auth(query: str) -> dict:
 # STAGE 2: MULTI-DOCUMENT TOC ROUTING
 # ============================================================
 
+def extract_candidate_sections(query: str, top_k_per_doc: int = 4) -> dict:
+    """Pre-rank candidate sections across registered policies using lexical BM25 matching."""
+    import pickle
+    tokens = re.findall(r"[a-z0-9]+", query.lower())
+    if not tokens:
+        return {}
+    candidates = {}
+    for k, d in registry.documents.items():
+        bm_file = d.get("bm25_file")
+        meta_file = d.get("metadata_file")
+        if not bm_file or not meta_file or not os.path.exists(bm_file) or not os.path.exists(meta_file):
+            continue
+        try:
+            with open(bm_file, "rb") as f:
+                b = pickle.load(f)
+            with open(meta_file, "r", encoding="utf-8") as f:
+                m = json.load(f)
+            scores = b["bm25"].get_scores(tokens)
+            top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:top_k_per_doc]
+            doc_cands = []
+            seen_ids = set()
+            for idx in top_indices:
+                if scores[idx] > 2.0:
+                    chunk = m[idx]
+                    t_id = chunk.get("toc_id")
+                    sec = chunk.get("section")
+                    if t_id and t_id not in seen_ids:
+                        seen_ids.add(t_id)
+                        doc_cands.append((t_id, sec, float(scores[idx])))
+            if doc_cands:
+                candidates[k] = doc_cands
+        except Exception:
+            pass
+    return candidates
+
+
 def route_query_to_toc(query: str) -> tuple[str, list[str]]:
     """
     Stage 2: Route user query against available policy Table of Contents using LLM.
     Returns: (document_key, list_of_toc_ids)
     """
-    compact_tocs = registry.get_compact_tocs()
     doc_keys_str = ", ".join(f'"{k}"' for k in registry.documents.keys())
+    candidates = extract_candidate_sections(query)
+
+    if candidates:
+        cand_lines = []
+        for d_key, c_list in candidates.items():
+            doc_name = registry.documents.get(d_key, {}).get("display_name", d_key)
+            cand_lines.append(f"Policy: {d_key} ({doc_name})")
+            for t_id, sec, sc in c_list:
+                cand_lines.append(f"  - [{t_id}] {sec}")
+            cand_lines.append("")
+        toc_context = "\n".join(cand_lines)
+    else:
+        toc_context = registry.get_compact_tocs()
 
     prompt = f"""Given the following clinical coverage policies Table of Contents and a clinical question, identify:
-1. The most relevant document key (one of: {doc_keys_str}). If NONE of the policies cover or are relevant to the question, set "document_key": null and "toc_ids": [].
-2. The specific section ID(s) (e.g. ["S9", "S9.1", "S9.1.1", "S9.1.2"] or ["S7.1.5"])
+1. The most relevant document key (strictly one of: {doc_keys_str}). If NONE of the policies cover or are relevant to the question, set "document_key": null and "toc_ids": [].
+2. The specific section ID(s) (e.g. ["S9", "S9.1", "S9.1.1"] or ["S3.7", "S3.7.1"])
 
-### Documents & Table of Contents:
-{compact_tocs}
+### Candidate Policies & Sections:
+{toc_context}
 
 ### Question:
 {query}
@@ -223,9 +271,45 @@ Output strictly a JSON object with keys "document_key" and "toc_ids":
         routing_data = extract_clean_json(raw_resp)
         doc_key = routing_data.get("document_key")
         toc_ids = routing_data.get("toc_ids", [])
-        if doc_key in registry.documents:
-            valid_ids = [str(x).strip() for x in toc_ids if re.match(r"^S\d+(?:\.\d+)*$", str(x).strip())]
-            return doc_key, valid_ids
+
+        # 1. Normalize candidate section IDs
+        candidate_ids = []
+        if doc_key and re.match(r"^S\d+(?:\.\d+)*$", str(doc_key).strip()):
+            candidate_ids.append(str(doc_key).strip())
+            doc_key = None
+        for x in toc_ids:
+            s = str(x).strip()
+            if re.match(r"^S\d+(?:\.\d+)*$", s):
+                candidate_ids.append(s)
+
+        # 2. Resolve document key flexibly
+        resolved_key = None
+        if doc_key and doc_key in registry.documents:
+            resolved_key = doc_key
+        elif doc_key:
+            for k, doc in registry.documents.items():
+                if str(doc_key).lower() in k.lower() or str(doc_key).lower() in doc["display_name"].lower():
+                    resolved_key = k
+                    break
+
+        # 3. Infer document from candidate section IDs if doc_key was omitted or was a section ID
+        if not resolved_key and candidate_ids:
+            first_id = candidate_ids[0]
+            for k, doc in registry.documents.items():
+                tf = doc.get("toc_file")
+                if tf and os.path.exists(tf):
+                    try:
+                        with open(tf, "r", encoding="utf-8") as f:
+                            d = json.load(f)
+                        nodes = set(n.get("toc_id") for n in d.get("flat_toc", []))
+                        if first_id in nodes or any(n and n.startswith(first_id + ".") for n in nodes):
+                            resolved_key = k
+                            break
+                    except Exception:
+                        pass
+
+        if resolved_key:
+            return resolved_key, candidate_ids
     except Exception as e:
         print(f"[Notice] TOC routing exception ({e})")
 

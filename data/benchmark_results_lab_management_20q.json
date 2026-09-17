@@ -1,0 +1,1581 @@
+{
+  "benchmark_timestamp": "2026-09-17T13:21:09.103972",
+  "total_queries": 20,
+  "yes_count": 13,
+  "no_count": 7,
+  "stage1_accuracy_percent": 100.0,
+  "stage2_accuracy_percent": 80.0,
+  "stage3_accuracy_percent": 95.0,
+  "stage4_accuracy_percent": 90.0,
+  "overall_end_to_end_accuracy_percent": 70.0,
+  "yes_end_to_end_accuracy_percent": 84.62,
+  "no_end_to_end_accuracy_percent": 42.86,
+  "detailed_results": [
+    {
+      "id": "Q01",
+      "type": "YES",
+      "cpt": "81162",
+      "query": "What are the clinical criteria for BRCA1 and BRCA2 full sequence analysis 81162 for hereditary breast and ovarian cancer?",
+      "elapsed_seconds": 13.49,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81162"
+        ],
+        "desc": "BRCA1 (BRCA1, DNA repair associated), BRCA2 (BRCA2, DNA repa"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.7.3",
+          "S3.7.5"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 5,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 1.0,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > BRCA Analysis > What is hereditary breast and ovarian cancer? (S3.7.3)",
+          "Test Specific Guidelines > BRCA Analysis > Guidelines and evidence (S3.7.5)",
+          "National Comprehensive Cancer Network (NCCN) recommendations (S3.7.5)"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Newly diagnosed breast cancer patients ≤65 years",
+            "Required findings": [
+              "Personal history of invasive breast cancer (stage I‑III or de novo stage IV) diagnosed at age 65 or younger",
+              "Pathology confirming breast cancer (any histology) with documented age at diagnosis",
+              "No prior germline BRCA testing or prior negative test performed before 2014 without PALB2 or large‑rearrangement analysis"
+            ],
+            "Source": "Guidelines and evidence > ASCO/SSO joint guideline (S3.7.5)"
+          },
+          {
+            "Guideline Category": "Newly diagnosed breast cancer patients >65 years with specific risk factors",
+            "Required findings": [
+              "Personal history of invasive breast cancer diagnosed after age 65",
+              "One or more of the following: candidate for PARP‑inhibitor therapy, triple‑negative breast cancer (ER‑, PR‑, HER2‑), documented personal or family history suggestive of a pathogenic BRCA variant, male sex at birth, Ashkenazi Jewish ancestry or other founder‑mutation population"
+            ],
+            "Source": "Guidelines and evidence > ASCO/SSO joint guideline (S3.7.5)"
+          },
+          {
+            "Guideline Category": "Epithelial ovarian cancer patients",
+            "Required findings": [
+              "Diagnosis of epithelial ovarian, fallopian tube, or primary peritoneal cancer (any stage)",
+              "Pathology report confirming epithelial histology",
+              "Recommendation for germline and somatic testing per ASCO 2025 guideline"
+            ],
+            "Source": "Guidelines and evidence > ASCO ovarian cancer guideline (S3.7.5)"
+          },
+          {
+            "Guideline Category": "Metastatic prostate cancer patients",
+            "Required findings": [
+              "Diagnosis of metastatic prostate cancer (hormone‑sensitive or castration‑resistant)",
+              "Evidence of metastatic disease on imaging or pathology",
+              "Recommendation for germline (and somatic) testing to guide PARP‑inhibitor therapy per ASCO 2025 guideline"
+            ],
+            "Source": "Guidelines and evidence > ASCO metastatic prostate cancer guideline (S3.7.5)"
+          },
+          {
+            "Guideline Category": "Clinically localized prostate cancer with high‑risk features",
+            "Required findings": [
+              "Diagnosis of clinically localized prostate cancer",
+              "Strong personal or family history of BRCA‑associated cancers (breast, ovarian, pancreatic, prostate, male breast) OR known familial BRCA mutation OR adverse tumor characteristics (high Gleason score, rapid PSA rise, etc.)",
+              "Documentation of risk‑factor assessment per AUA/ASTRO 2022 guideline"
+            ],
+            "Source": "Guidelines and evidence > AUA/ASTRO localized prostate guideline (S3.7.5)"
+          },
+          {
+            "Guideline Category": "Unaffected individuals with qualifying family history",
+            "Required findings": [
+              "No personal history of cancer",
+              "Documented first‑degree relative with a pathogenic BRCA1/2 mutation OR multiple family members with HBOC‑associated cancers (breast <50, ovarian, pancreatic, prostate, male breast, triple‑negative breast cancer) meeting NCCN criteria",
+              "Pedigree or family‑history report demonstrating degree of relationship and ages at diagnosis"
+            ],
+            "Source": "Guidelines and evidence > NCCN recommendations (S3.7.5)"
+          },
+          {
+            "Guideline Category": "Women meeting USPSTF risk‑assessment criteria",
+            "Required findings": [
+              "Personal or family history of breast, ovarian, tubal, or primary peritoneal cancer, or Ashkenazi Jewish ancestry, that yields a positive result on an appropriate brief familial risk‑assessment tool",
+              "Completed risk‑assessment tool result indicating elevated risk",
+              "Genetic counseling documentation confirming indication for testing"
+            ],
+            "Source": "Guidelines and evidence > USPSTF recommendation (S3.7.5)"
+          }
+        ],
+        "Non-Indications": [
+          "Routine BRCA testing for all breast cancer patients without meeting age, histology, or family‑history criteria (as ACMG states insufficient evidence for universal testing)",
+          "Individuals without personal or family history of HBOC‑associated cancers, without Ashkenazi Jewish or other founder‑mutation ancestry, and without high‑risk tumor characteristics",
+          "Patients who have already undergone comprehensive germline testing that identified no pathogenic variant and have no new risk factors or family history changes",
+          "Testing of unaffected relatives when an affected family member is available for testing first (unless unavailable per USPSTF/NCCN guidance)"
+        ],
+        "Important criteria & exceptions": [
+          "Testing of Ashkenazi Jewish individuals may be limited to the three founder mutations unless broader panel is clinically indicated",
+          "Patients with prior germline testing performed before 2014 may be re‑evaluated because earlier assays often lacked PALB2 and large‑rearrangement coverage",
+          "Cascade testing of at‑risk family members is recommended when a pathogenic variant is identified in a proband",
+          "For metastatic prostate cancer, both germline and somatic testing are required to inform PARP‑inhibitor eligibility"
+        ],
+        "Documentation required": [
+          "Pathology report confirming cancer type, stage, and histology (breast, ovarian, prostate, pancreatic, etc.)",
+          "Age at cancer diagnosis and tumor subtype (e.g., triple‑negative status for breast cancer)",
+          "Comprehensive family‑history pedigree documenting affected relatives, cancer types, ages at diagnosis, and relationship degree",
+          "Ancestry documentation confirming Ashkenazi Jewish or other high‑prevalence founder‑mutation background",
+          "Result of a validated familial risk‑assessment tool (USPSTF) when applicable",
+          "Genetic counseling note outlining indication, discussion of risks/benefits, and patient consent",
+          "Prior germline genetic test report (if any) indicating methods used and coverage (to assess need for updated testing)",
+          "Imaging or laboratory reports demonstrating metastatic disease for prostate or ovarian cancer indications"
+        ]
+      }
+    },
+    {
+      "id": "Q02",
+      "type": "YES",
+      "cpt": "81292",
+      "query": "What are the requirements for MLH1 full gene sequencing 81292 for Lynch Syndrome genetic testing?",
+      "elapsed_seconds": 30.4,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81292"
+        ],
+        "desc": "MLH1 (mutL homolog 1, colon cancer, nonpolyposis type 2) (eg"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.40.1"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 1,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 0.75,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > Lynch Syndrome Genetic Testing > Criteria (TOC: S3.40.1)",
+          "Known Familial Mutation Analysis",
+          "Gene Sequencing and/or Deletion/Duplication Analysis of MLH1, MSH2, MSH6, PMS2, or EPCAM"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Gene Sequencing and/or Deletion/Duplication Analysis of MLH1, MSH2, MSH6, PMS2, or EPCAM",
+            "Required findings": [
+              "Pre‑ and post‑test genetic counseling documented by an appropriate provider as defined by the health plan.",
+              "No prior genetic testing of the MLH1 gene using the same methodology (sequencing or deletion/duplication analysis).",
+              "If a familial MLH1 mutation is known, it must not fully explain the current indication for testing.",
+              "Patient is 18 years of age or older at the time of order.",
+              "Familial adenomatous polyposis (FAP) has been definitively ruled out.",
+              "The ordering laboratory is a qualified provider per health‑plan policy."
+            ],
+            "Source": "Test Specific Guidelines > Lynch Syndrome Genetic Testing > Criteria > Gene Sequencing and/or Deletion/Duplication Analysis of MLH1, MSH2, MSH6, PMS2, or EPCAM"
+          }
+        ],
+        "Non-Indications": [
+          "Patient younger than 18 years.",
+          "Prior MLH1 sequencing or deletion/duplication analysis already performed.",
+          "A known familial MLH1 mutation that fully accounts for the indication without additional testing.",
+          "Familial adenomatous polyposis (FAP) not ruled out.",
+          "Genetic counseling (pre‑ or post‑test) not provided or not documented.",
+          "Testing ordered from a laboratory not recognized as a qualified provider.",
+          "Lynch syndrome testing performed without MSI and/or IHC results when not an extenuating circumstance."
+        ],
+        "Important criteria & exceptions": [
+          "Pre‑ and post‑test genetic counseling is mandatory for all Lynch syndrome genetic tests.",
+          "Testing may be performed as part of a multigene, multisyndrome panel, but that scenario is addressed in a separate guideline.",
+          "Lynch syndrome testing without tumor MSI/IHC results is only considered medically necessary in extenuating circumstances and requires additional review.",
+          "The rendering laboratory must meet the health‑plan’s qualified‑provider requirements."
+        ],
+        "Documentation required": [
+          "Genetic counseling notes (pre‑test and post‑test) signed by an appropriate provider.",
+          "Prior genetic test report(s) confirming no previous MLH1 sequencing or deletion/duplication analysis.",
+          "Family history documentation showing absence of a known familial MLH1 mutation that explains the indication, or documentation that the known mutation is insufficient.",
+          "Patient’s date of birth or age verification document.",
+          "Clinical note or report confirming that FAP has been ruled out (e.g., APC testing results, colonoscopic findings).",
+          "If available, tumor MSI and/or IHC results; if not available, a statement describing the extenuating circumstance.",
+          "Order form indicating that the selected laboratory is a qualified provider per plan policy."
+        ]
+      }
+    },
+    {
+      "id": "Q03",
+      "type": "YES",
+      "cpt": "81415",
+      "query": "What are the coverage criteria for whole exome sequencing 81415 for unexplained developmental delay?",
+      "elapsed_seconds": 46.5,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81415"
+        ],
+        "desc": "and KCNQ1 Exome (eg, unexplained constitutional or heritable"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.6.1",
+          "S3.23"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": false,
+        "num_retrieved": 13,
+        "section_purity": 0.7692307692307693
+      },
+      "stage4_clinical_synthesis": {
+        "pass": false,
+        "valid_json": true,
+        "has_indications": false,
+        "term_score": 0.5,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections"
+        ]
+      },
+      "end_to_end_pass": false,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > Autism, Intellectual Disability, and Developmental Delay Genetic Testing > Criteria (TOC: S3.6.1)",
+          "Test Specific Guidelines > Exome Sequencing > Billing and Reimbursement",
+          "Test Specific Guidelines > Exome Sequencing > What is exome sequencing?",
+          "Test Specific Guidelines > Exome Sequencing > Test information",
+          "Test Specific Guidelines > Exome Sequencing > Guidelines and evidence",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing > References",
+          "Test Specific Guidelines > Exome Sequencing"
+        ]
+      }
+    },
+    {
+      "id": "Q04",
+      "type": "YES",
+      "cpt": "81541",
+      "query": "What are the indications for Prolaris mRNA gene expression profiling 81541 for prostate cancer?",
+      "elapsed_seconds": 7.31,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81541"
+        ],
+        "desc": "Oncology (prostate), mRNA gene expression profiling by real-"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.58.2"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 1,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 0.6666666666666666,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > Prolaris",
+          "Localized prostate cancer risk assessment",
+          "Post‑radical prostatectomy prognostic assessment"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Prostate cancer risk stratification (localized disease and post‑radical prostatectomy)",
+            "Required findings": [
+              "Clinical diagnosis of localized prostate cancer or post‑radical prostatectomy status with intent to determine suitability for active surveillance or definitive therapy",
+              "Pathology data including Gleason score and tumor stage (and surgical margin status for post‑RP patients)",
+              "Serum PSA level and, when applicable, PSA kinetics such as biochemical recurrence timing or PSA doubling time",
+              "Provider documentation indicating that the test result will be used to guide management decisions (e.g., active surveillance selection, adjuvant or salvage therapy, or definitive treatment planning)"
+            ],
+            "Source": "Test Specific Guidelines > Prolaris"
+          }
+        ],
+        "Non-Indications": [],
+        "Important criteria & exceptions": [],
+        "Documentation required": [
+          "Pathology report with Gleason score and tumor stage",
+          "Serum PSA laboratory results (including trends if available)",
+          "Radical prostatectomy operative report and pathology findings (for post‑RP patients)",
+          "Clinical note documenting consideration of active surveillance versus treatment based on risk assessment"
+        ]
+      }
+    },
+    {
+      "id": "Q05",
+      "type": "YES",
+      "cpt": "81552",
+      "query": "What are the medical necessity criteria for DecisionDx-UM mRNA expression profiling 81552 for uveal melanoma?",
+      "elapsed_seconds": 10.28,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81552"
+        ],
+        "desc": "Oncology (uveal melanoma), mRNA, gene expression profiling b"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.18.3"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 1,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 1.0,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > DecisionDx Uveal Melanoma > Guidelines and evidence (TOC: S3.18.3)",
+          "Primary localized uveal melanoma",
+          "Biopsy performed before irradiation"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Primary localized uveal melanoma – prognostic gene expression profiling",
+            "Required findings": [
+              "Confirmed diagnosis of primary, localized uveal melanoma based on ocular imaging (ultrasound, MRI, or fundus photography) and pathology.",
+              "Biopsy of the primary tumor performed prior to definitive radiation therapy (or at time of primary treatment) providing adequate tissue for molecular analysis.",
+              "Molecular/chromosomal testing ordered for prognostication, with gene expression profiling (15‑gene DecisionDx‑UM assay) preferred over cytology alone per NCCN 2024 recommendations.",
+              "Intended use of the assay for risk stratification into Class 1A, 1B, or Class 2 to guide follow‑up frequency and eligibility for clinical trials.",
+              "Absence of contraindicating factors such as documented metastatic disease, prior systemic therapy for melanoma, or lack of consent for prognostic testing."
+            ],
+            "Source": "Test Specific Guidelines > DecisionDx Uveal Melanoma > Guidelines and evidence"
+          }
+        ],
+        "Non-Indications": [
+          "Use of DecisionDX‑PRAME assay (insufficient evidence per policy).",
+          "Patients with metastatic uveal melanoma or systemic disease.",
+          "Patients without a prior tumor biopsy or with biopsy performed after irradiation.",
+          "Reliance on cytology alone without molecular/chromosomal testing.",
+          "Patients lacking documented discussion of risk/benefit and impact on management."
+        ],
+        "Important criteria & exceptions": [
+          "Molecular/chromosomal testing is preferred over cytology alone for prognostication.",
+          "Biopsy may be performed at the time of primary treatment modality, but must occur before irradiation.",
+          "Testing is used to inform frequency of follow‑up and eligibility for clinical trials; therefore documentation of intended use is required."
+        ],
+        "Documentation required": [
+          "Ocular imaging report (ultrasound, MRI, or fundus photography) confirming a primary, localized uveal melanoma.",
+          "Biopsy pathology report demonstrating adequate tissue and confirming diagnosis.",
+          "Physician order for DecisionDx‑UM 15‑gene assay (CPT 81552).",
+          "Provider note documenting discussion of prognostic testing, risk/benefit analysis, and intended impact on follow‑up or trial eligibility.",
+          "Radiation therapy plan or treatment note showing biopsy performed prior to irradiation (if radiation is planned).",
+          "Any clinical trial eligibility documentation that references the need for molecular prognostic information."
+        ]
+      }
+    },
+    {
+      "id": "Q06",
+      "type": "YES",
+      "cpt": "81321",
+      "query": "What are the criteria for PTEN gene full sequence analysis 81321 for PTEN hamartoma tumor syndrome and Cowden syndrome?",
+      "elapsed_seconds": 27.1,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81321"
+        ],
+        "desc": "PTEN (phosphatase and tensin homolog) (eg, Cowden syndrome, "
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.53.1"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 3,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 1.0,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > PTEN Hamartoma Tumor Syndromes Genetic Testing > Criteria (TOC: S3.53.1)",
+          "Diagnostic Testing for Symptomatic Individuals",
+          "Predisposition Testing for Presymptomatic/Asymptomatic Individuals"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Diagnostic Testing for Symptomatic Individuals",
+            "Required findings": [
+              "Pre‑ and post‑test genetic counseling documented by an appropriate provider",
+              "No prior PTEN sequencing documented in the medical record",
+              "Personal history meeting any one of the following: Bannayan‑Riley‑Ruvalcaba syndrome; adult Lhermitte‑Duclos disease; autism spectrum disorder with macrocephaly; ≥2 biopsy‑proven trichilemmomas; ≥2 major criteria (one must be macrocephaly); 3 major criteria without macrocephaly; 1 major plus ≥3 minor criteria; or ≥4 minor criteria",
+              "If major/minor criteria are used, documented evidence of each criterion (e.g., macrocephaly ≥97th percentile, breast/endometrial/follicular thyroid cancer, mucocutaneous lesions, etc.)",
+              "Laboratory selected is a qualified provider per Health Plan policy"
+            ],
+            "Source": "Test Specific Guidelines > PTEN Hamartoma Tumor Syndromes Genetic Testing > Criteria (TOC: S3.53.1)"
+          },
+          {
+            "Guideline Category": "Predisposition Testing for Presymptomatic/Asymptomatic Individuals",
+            "Required findings": [
+              "Pre‑ and post‑test genetic counseling documented by an appropriate provider",
+              "No prior PTEN genetic testing that would detect the familial mutation",
+              "At‑risk individual with a first‑degree (or more distant if first‑degree unavailable) relative clinically diagnosed with Cowden syndrome or BRRS",
+              "At‑risk individual must have either one major criterion or two minor criteria as defined in the PTEN criteria table",
+              "Laboratory selected is a qualified provider per Health Plan policy"
+            ],
+            "Source": "Test Specific Guidelines > PTEN Hamartoma Tumor Syndromes Genetic Testing > Criteria (TOC: S3.53.1)"
+          }
+        ],
+        "Non-Indications": [
+          "Any prior PTEN sequencing or deletion/duplication analysis already performed",
+          "Previous genetic testing that would detect the familial PTEN mutation",
+          "Absence of required major/minor clinical criteria for symptomatic testing",
+          "Lack of documented family history of Cowden syndrome or BRRS for presymptomatic testing",
+          "Failure to provide pre‑ and post‑test genetic counseling documentation"
+        ],
+        "Important criteria & exceptions": [
+          "Pre‑ and post‑test genetic counseling must be performed by a provider approved by the Health Plan",
+          "The ordering laboratory must be a qualified provider per the Health Plan policy",
+          "For presymptomatic testing, a relative’s clinical diagnosis (not just a genetic result) is required",
+          "If a first‑degree relative is unavailable or unwilling, more distant relatives may be used provided they have a confirmed clinical diagnosis"
+        ],
+        "Documentation required": [
+          "Genetic counseling notes (pre‑test and post‑test) signed by an appropriate provider",
+          "Prior genetic test reports confirming no previous PTEN sequencing or deletion/duplication testing",
+          "Family pedigree documenting a relative with Cowden syndrome or BRRS and their clinical diagnosis",
+          "Clinical documentation of each major or minor criterion present (e.g., pathology reports of trichilemmomas, cancer registry reports, macrocephaly measurement, imaging confirming macrocephaly, dermatology reports of mucocutaneous lesions)",
+          "Signed order indicating the selected laboratory is a qualified provider per policy"
+        ]
+      }
+    },
+    {
+      "id": "Q07",
+      "type": "YES",
+      "cpt": "0047U",
+      "query": "What are the coverage guidelines for Decipher Prostate genomic classifier 0047U mRNA gene expression profiling?",
+      "elapsed_seconds": 36.43,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "0047U"
+        ],
+        "desc": "Oncology (prostate), mRNA, gene expression profiling by real"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.17.6"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 2,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 1.0,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > Decipher Prostate Genomic Classifier",
+          "Decipher Prostate for Radical Prostatectomy (RP)",
+          "Decipher Prostate for Biopsy"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Decipher Prostate for Radical Prostatectomy (RP)",
+            "Required findings": [
+              "No previous gene expression profile testing performed for this prostate cancer diagnosis",
+              "Patient has undergone radical prostatectomy",
+              "Post‑surgical PSA is undetectable (below 0.2 mg/dl)",
+              "No evidence of lymph node metastasis on staging studies",
+              "Surgical pathology demonstrates at least one adverse feature: positive surgical margin(s), extracapsular extension, or seminal vesicle invasion",
+              "Test is requested specifically to inform adjuvant treatment decision‑making"
+            ],
+            "Source": "Decipher Prostate Genomic Classifier > Criteria (TOC: S3.17.6)"
+          }
+        ],
+        "Non-Indications": [
+          "Decipher Prostate testing performed on biopsy specimens (i.e., before radical prostatectomy) is considered not medically necessary",
+          "Any patient with prior gene expression profile testing for the same prostate cancer diagnosis",
+          "Detectable post‑surgical PSA (≥0.2 mg/dl)",
+          "Presence of lymph node metastasis",
+          "Absence of any adverse pathological features (positive margin, extracapsular extension, seminal vesicle invasion)",
+          "Test requested for purposes other than informing adjuvant therapy"
+        ],
+        "Important criteria & exceptions": [],
+        "Documentation required": [
+          "Operative report confirming radical prostatectomy",
+          "Pathology report of the prostate specimen documenting adverse features (positive margins, extracapsular extension, seminal vesicle invasion)",
+          "Most recent post‑operative PSA laboratory result showing <0.2 mg/dl",
+          "Imaging or surgical staging report confirming no lymph node metastasis",
+          "Record indicating no prior gene expression profiling for this cancer diagnosis",
+          "Provider order or clinical note stating the test is being requested to guide adjuvant treatment decisions"
+        ]
+      }
+    },
+    {
+      "id": "Q08",
+      "type": "YES",
+      "cpt": "0089U",
+      "query": "What are the criteria for DermTech Melanoma test 0089U gene expression profiling of PRAME and LINC00518?",
+      "elapsed_seconds": 37.03,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "0089U"
+        ],
+        "desc": "Oncology (melanoma), gene expression profiling by RTqPCR, PR"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.19.1",
+          "S3.19.2"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 3,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 1.0,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > DermTech Melanoma Test",
+          "Test information",
+          "Guidelines and evidence"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Clinically atypical pigmented lesion meeting at least one ABCDE criterion",
+            "Required findings": [
+              "Lesion is pigmented and clinically suspicious for melanoma, meeting ≥1 of the ABCDE criteria (asymmetry, border irregularity, color variation, diameter ≥6 mm, evolution).",
+              "Physical examination documents lesion size, location, morphology, and confirms it is not on mucous membranes, palms, or soles.",
+              "Adhesive‑patch mRNA assay demonstrating expression of PRAME and/or LINC00518 (positive result) or a negative result with sufficient RNA; optional TERT promoter mutation assay if adequate material.",
+              "Conservative management: test is ordered when clinician seeks additional information before proceeding to surgical biopsy (e.g., lesion in cosmetically sensitive area, patient at high risk for biopsy complications, or patient refuses biopsy).",
+              "General criteria: lesion must be amenable to adhesive‑patch sampling; test used as adjunct to clinical and dermoscopic assessment, not for routine prognostication or surveillance."
+            ],
+            "Source": "Test information > Test information (TOC: S3.19.1)"
+          }
+        ],
+        "Non-Indications": [
+          "Lesions that do not meet any ABCDE criteria or are not clinically suspicious for melanoma.",
+          "Lesions located on mucous membranes, palms of the hands, or soles of the feet.",
+          "Use of the test for routine prognostic profiling, sentinel lymph node eligibility, or surveillance without a biopsy decision.",
+          "Routine molecular testing for baseline prognostication as discouraged by AAD and NCCN.",
+          "Application of the test outside of an adjunctive role to clinical/dermoscopic evaluation."
+        ],
+        "Important criteria & exceptions": [
+          "Test cannot be performed on mucous membranes, palms, or soles.",
+          "Test is intended only as a decision‑making aid prior to surgical biopsy, not as a definitive diagnostic or prognostic tool.",
+          "Positive result should be followed by surgical biopsy for definitive diagnosis.",
+          "Negative result may allow deferral of biopsy if clinical assessment remains low risk."
+        ],
+        "Documentation required": [
+          "Detailed clinical note describing lesion morphology and which ABCDE criteria are met.",
+          "Dermoscopic images or photographs of the lesion.",
+          "Location documentation confirming lesion is not on excluded sites (mucosa, palms, soles).",
+          "Statement of clinical rationale for ordering the test (e.g., cosmetically sensitive area, high biopsy risk, patient refusal).",
+          "Adhesive‑patch test order specifying PRAME and LINC00518 (and optional TERT) analysis.",
+          "Result report of the DermTech Melanoma Test."
+        ]
+      }
+    },
+    {
+      "id": "Q09",
+      "type": "YES",
+      "cpt": "81465",
+      "query": "What are the requirements for whole mitochondrial genome large deletion analysis panel 81465?",
+      "elapsed_seconds": 33.9,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81465"
+        ],
+        "desc": "Whole mitochondrial genome large deletion analysis panel (eg"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.46.2"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 1,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": false,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 0.6666666666666666,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": false,
+      "synthesized_json": {
+        "Prior auth required": "No",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > Mitochondrial Disorders Genetic Testing > Billing and Reimbursement",
+          "Billing and Reimbursement"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Whole mtDNA Deletion/Duplication Testing (81465)",
+            "Required findings": [
+              "Member meets criteria for whole mtDNA deletion/duplication based on personal history, clinical findings, and family history indicating mtDNA mutation is equally likely as nuclear DNA cause",
+              "Test must be billed with a single, appropriate panel procedure code 81465",
+              "Only one lifetime reimbursement is allowed for this individual gene or multi‑gene panel",
+              "If multiple mitochondrial tests are ordered, 81465 is reimbursable only after tiering order (81460 first, then 81465, then 81440) when criteria for all requested tests are met",
+              "Only the limited number of panel components most likely to explain the member's presentation are reimbursable; extraneous components are excluded"
+            ],
+            "Source": "Test Specific Guidelines > Mitochondrial Disorders Genetic Testing > Billing and Reimbursement"
+          }
+        ],
+        "Non-Indications": [
+          "Repeat testing of the same individual gene or multi‑gene panel beyond the once‑per‑lifetime limit",
+          "Ordering 81465 when mtDNA deletion/duplication is not clinically suspected or not equally likely as nuclear DNA causes based on history and findings",
+          "Submitting the test with multiple component codes instead of the single panel code 81465",
+          "Including panel components that are not among the limited number most likely to explain the presentation",
+          "Requesting 81465 together with other mitochondrial tests without following the tiered reimbursement order"
+        ],
+        "Important criteria & exceptions": [
+          "Reimbursement is limited to one lifetime per individual gene or multi‑gene panel",
+          "The test must be billed using the single appropriate CPT code 81465; if a panel code cannot be used, each component is assessed separately",
+          "When more than one mitochondrial test is ordered, reimbursement follows tiered priority: 81460 → 81465 → 81440",
+          "If a combined panel code (e.g., 0417U) covering both mtDNA and nuclear DNA is used, it is reimbursable only when criteria for all included tests are met and mtDNA and nuclear DNA causes are equally likely"
+        ],
+        "Documentation required": [
+          "Physician order specifying CPT code 81465 and indicating clinical indication for whole mtDNA deletion/duplication",
+          "Detailed patient personal and family history documenting suspicion for mtDNA mutation (e.g., neuromuscular symptoms, maternal inheritance pattern)",
+          "Clinical findings report supporting the need for mtDNA deletion/duplication analysis",
+          "Record confirming the test has not been previously performed for this patient (lifetime limit verification)",
+          "If multiple mitochondrial tests are ordered, documentation showing tiered justification and that prior higher‑tier tests (81460) are indicated or have been completed"
+        ]
+      }
+    },
+    {
+      "id": "Q10",
+      "type": "YES",
+      "cpt": "81470",
+      "query": "What are the indications for X-linked intellectual disability multigene panel 81470 genetic testing?",
+      "elapsed_seconds": 30.92,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81470"
+        ],
+        "desc": "X-linked intellectual disability (XLID) (eg, syndromic and n"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.6.1"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 3,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 1.0,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > Autism, Intellectual Disability, and Developmental Delay Genetic Testing",
+          "X-Linked Intellectual Disability Panels",
+          "Criteria (TOC: S3.6.1)"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "X-Linked Intellectual Disability Panel",
+            "Required findings": [
+              "Individual assigned male at birth",
+              "Formal diagnosis of autism spectrum disorder, intellectual disability, and/or developmental delay made by an appropriate health care professional",
+              "Family history of autism, intellectual disability, or developmental delay of unknown etiology consistent with X‑linked inheritance",
+              "Medical management would be significantly altered by the genetic diagnosis, or a specific treatment being considered requires a genetic diagnosis",
+              "No known underlying genetic cause for the symptoms (e.g., prior identified genetic condition)",
+              "Rendering laboratory is a qualified provider per Health Plan policy"
+            ],
+            "Source": "Test Specific Guidelines > Autism, Intellectual Disability, and Developmental Delay Genetic Testing > Criteria (TOC: S3.6.1)"
+          }
+        ],
+        "Non-Indications": [
+          "Patient is not assigned male at birth",
+          "Absence of a formal ASD/ID/DD diagnosis by an appropriate provider",
+          "No family history consistent with X‑linked inheritance",
+          "Known underlying genetic cause already identified",
+          "Medical management would not be altered by the genetic result",
+          "Testing requested more than once in the patient’s lifetime without evidence of technical advancement",
+          "Request for comprehensive ASD/ID/DD panels (non‑X‑linked) which are deemed investigational"
+        ],
+        "Important criteria & exceptions": [
+          "Testing is limited to one lifetime per member unless a technical advance justifies repeat testing",
+          "Rendering laboratory must be a qualified provider per Health Plan policy",
+          "Comprehensive ASD/ID/DD panels are considered experimental, investigational, or unproven and are not covered"
+        ],
+        "Documentation required": [
+          "Provider note confirming formal diagnosis of ASD, intellectual disability, or developmental delay signed by an appropriate health care professional",
+          "Medical record indicating sex assigned at birth (male)",
+          "Detailed family history or pedigree demonstrating X‑linked inheritance pattern for ASD/ID/DD",
+          "Statement that no known genetic cause has been identified (including prior negative genetic testing reports)",
+          "Clinical note describing how the genetic result would change management or guide a specific treatment",
+          "Verification that the selected laboratory is a qualified provider per Health Plan policy"
+        ]
+      }
+    },
+    {
+      "id": "Q11",
+      "type": "YES",
+      "cpt": "81518",
+      "query": "What are the clinical criteria for Breast Cancer Index 81518 mRNA gene expression profiling for breast cancer prognosis?",
+      "elapsed_seconds": 30.1,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81518"
+        ],
+        "desc": "Oncology (breast), mRNA, gene expression profiling by real-t"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.8.1"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 1,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 1.0,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines",
+          "Breast Cancer Index for Breast Cancer Prognosis",
+          "Criteria (TOC: S3.8.1)"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Prognostic testing for adjuvant chemotherapy decision making",
+            "Required findings": [
+              "No prior gene expression assay performed on the same tumor with a previously obtained prognostic result",
+              "Primary invasive breast cancer that is unilateral, tumor size >0.5 cm (5 mm) in greatest dimension (T1b‑T3), hormone‑receptor positive (ER+ and/or PR+), HER2 negative",
+              "Regional nodal status of pN0 (no nodal metastasis) or pN1mi (micrometastases ≤2.0 mm)",
+              "Adjuvant endocrine systemic chemotherapy is being considered or the BCI result will be used to decide on adjuvant chemotherapy",
+              "The rendering laboratory is a qualified provider per health‑plan policy"
+            ],
+            "Source": "Test Specific Guidelines > Breast Cancer Index for Breast Cancer Prognosis > Criteria (TOC: S3.8.1)"
+          },
+          {
+            "Guideline Category": "Predictive testing for extended endocrine therapy decision making",
+            "Required findings": [
+              "No prior gene expression assay performed on the same tumor with a previously obtained predictive result",
+              "Primary invasive breast cancer that is unilateral, hormone‑receptor positive (ER+ and/or PR+), HER2 negative",
+              "Involvement of 0‑3 ipsilateral axillary lymph nodes",
+              "Extended endocrine therapy beyond five years is a contemplated treatment option and the BCI result will be used to guide that decision",
+              "The rendering laboratory is a qualified provider per health‑plan policy"
+            ],
+            "Source": "Test Specific Guidelines > Breast Cancer Index for Breast Cancer Prognosis > Criteria (TOC: S3.8.1)"
+          }
+        ],
+        "Non-Indications": [
+          "Presence of a prior gene expression assay on the same tumor with a successful prognostic or predictive result",
+          "Bilateral breast tumors or more than one ipsilateral primary that does not meet the “most aggressive histology” rule without an approved exception",
+          "Tumor size ≤0.5 cm (≤5 mm)",
+          "Hormone‑receptor negative (ER‑ and PR‑) or HER2 positive disease",
+          "Regional nodal metastasis greater than micrometastases (e.g., macrometastatic nodes) for prognostic testing",
+          "More than 3 positive ipsilateral axillary nodes for predictive (extended endocrine therapy) testing",
+          "No plan to use the BCI result for adjuvant chemotherapy decision (prognostic) or for extended endocrine therapy decision (predictive)",
+          "Rendering laboratory not recognized as a qualified provider by the health plan"
+        ],
+        "Important criteria & exceptions": [
+          "When multiple ipsilateral primary tumors are present, testing must be performed on the tumor with the most aggressive histologic features; exceptions require documented evidence of distinct tumors and lack of chemotherapy indication for either tumor",
+          "If both tumors are to be tested, each must independently satisfy all required clinical characteristics"
+        ],
+        "Documentation required": [
+          "Pathology report confirming unilateral invasive carcinoma, tumor size, hormone‑receptor status (ER/PR), HER2 status, and nodal status (pN0 or pN1mi)",
+          "Surgical or core‑needle biopsy report for each tumor when multiple ipsilateral primaries exist",
+          "Radiology report (mammogram, ultrasound, MRI) documenting tumor size and laterality if not fully captured in pathology",
+          "Oncologist treatment plan note indicating that adjuvant chemotherapy is being considered (prognostic) or that extended endocrine therapy beyond five years is a treatment option (predictive)",
+          "Record of any prior gene expression assay performed on the same tumor (including result) to demonstrate absence of prior testing",
+          "Verification of rendering laboratory qualification (e.g., contract, credentialing documentation) per health‑plan policy"
+        ]
+      }
+    },
+    {
+      "id": "Q12",
+      "type": "YES",
+      "cpt": "0488U",
+      "query": "What are the guidelines for non-invasive prenatal screening NIPS cell-free DNA 0488U?",
+      "elapsed_seconds": 44.14,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "0488U"
+        ],
+        "desc": "Obstetrics (fetal antigen noninvasive prenatal test), cell-f"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.48.4"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 3,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 0.75,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > Non-Invasive Prenatal Screening",
+          "Singleton gestation – common autosomal aneuploidies",
+          "Twin gestation – common autosomal aneuploidies"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "Singleton gestation – common autosomal aneuploidies (trisomy 21, 18, 13)",
+            "Required findings": [
+              "Pregnant patient with a confirmed singleton gestation",
+              "Desire to screen for fetal trisomies 21, 18, or 13",
+              "No contraindication such as vanishing twin or known fetal demise",
+              "Patient has received counseling on test performance, false‑positive/negative rates, and need for confirmatory diagnostic testing if result is positive",
+              "Screening performed as the sole prenatal screening method (no concurrent multiple screening tests)"
+            ],
+            "Source": "Test Specific Guidelines > Non-Invasive Prenatal Screening > Guidelines and evidence"
+          },
+          {
+            "Guideline Category": "Twin gestation – common autosomal aneuploidies",
+            "Required findings": [
+              "Pregnant patient with confirmed twin gestation",
+              "Desire to screen for fetal trisomies 21, 18, or 13",
+              "Counseling provided regarding limited data for trisomy 18 and 13 in twins",
+              "No concurrent multiple screening modalities",
+              "If a fetal demise, vanishing twin, or anomaly is identified, patient is counseled that accuracy may be reduced and diagnostic testing offered"
+            ],
+            "Source": "Test Specific Guidelines > Non-Invasive Prenatal Screening > Guidelines and evidence"
+          },
+          {
+            "Guideline Category": "Singleton gestation – sex chromosome aneuploidies (SCA)",
+            "Required findings": [
+              "Pregnant patient with confirmed singleton gestation",
+              "Desire to screen for sex chromosome aneuploidies",
+              "Pre‑test counseling specific to SCA limitations and variable PPV",
+              "Screening performed as the sole prenatal screen"
+            ],
+            "Source": "Test Specific Guidelines > Non-Invasive Prenatal Screening > Guidelines and evidence"
+          },
+          {
+            "Guideline Category": "Singleton gestation – 22q11.2 deletion syndrome",
+            "Required findings": [
+              "Pregnant patient with confirmed singleton gestation",
+              "Desire to screen for 22q11.2 deletion syndrome",
+              "Counseling provided that recommendation is conditional and based on moderate certainty",
+              "Screening performed as the sole prenatal screen"
+            ],
+            "Source": "Test Specific Guidelines > Non-Invasive Prenatal Screening > Guidelines and evidence"
+          }
+        ],
+        "Non-Indications": [
+          "Screening for single‑gene disorders using cfDNA (e.g., skeletal dysplasias, sickle cell disease, cystic fibrosis) – not recommended",
+          "Routine screening for microdeletions other than 22q11.2 – insufficient evidence, not recommended",
+          "Screening for rare autosomal trisomies – no recommendation due to insufficient evidence",
+          "NIPS performed in a pregnancy with a known vanishing twin without counseling – not recommended",
+          "Use of multiple concurrent prenatal screening tests (e.g., serum + cfDNA) – not medically necessary"
+        ],
+        "Important criteria & exceptions": [
+          "NIPS may be offered to all pregnant patients regardless of age or risk for common aneuploidies",
+          "If screening is accepted, only one prenatal screening approach should be used at a time",
+          "Positive NIPS results must be followed by genetic counseling and confirmatory diagnostic testing before any irreversible decision",
+          "In twin pregnancies, if a fetal demise, vanishing twin, or anomaly is present, accuracy may be compromised and diagnostic testing should be offered",
+          "Pre‑test counseling is required for SCAs and 22q11.2 deletion screening"
+        ],
+        "Documentation required": [
+          "Obstetric provider order for NIPS specifying indication",
+          "Ultrasound report confirming gestational age and singleton or twin status",
+          "Genetic counseling note documenting discussion of test performance, limitations, and need for confirmatory testing",
+          "Signed patient consent for NIPS",
+          "If applicable, prior serum screening results or nuchal translucency measurements when NIPS is used as contingent screen",
+          "If vanishing twin or fetal demise present, documentation of counseling regarding reduced accuracy"
+        ]
+      }
+    },
+    {
+      "id": "Q13",
+      "type": "YES",
+      "cpt": "81479",
+      "query": "What are the medical necessity criteria for TP53 genetic testing 81479 for Li-Fraumeni syndrome?",
+      "elapsed_seconds": 37.78,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "Yes",
+        "matched_cpts": [
+          "81479"
+        ],
+        "desc": "Unlisted molecular pathology procedure"
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S3.63.1"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 1,
+        "section_purity": 1.0
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "valid_json": true,
+        "has_indications": true,
+        "term_score": 0.75,
+        "schema_keys": [
+          "Prior auth required",
+          "Policy Name",
+          "Referred Sections",
+          "Medical necessity indications",
+          "Non-Indications",
+          "Important criteria & exceptions",
+          "Documentation required"
+        ]
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "Yes",
+        "Policy Name": "Cigna Laboratory Management Guidelines",
+        "Referred Sections": [
+          "Test Specific Guidelines > Li-Fraumeni Syndrome Genetic Testing > Criteria (TOC: S3.63.1)",
+          "TP53 Known Familial Mutation Analysis",
+          "TP53 Sequence Analysis",
+          "TP53 Deletion/Duplication Analysis"
+        ],
+        "Medical necessity indications": [
+          {
+            "Guideline Category": "TP53 Known Familial Mutation Analysis",
+            "Required findings": [
+              "Pre- and post-test genetic counseling performed by a provider approved by the health plan",
+              "No prior genetic test that could detect the familial TP53 mutation",
+              "Documented known pathogenic TP53 mutation in a first-, second- or third-degree relative",
+              "Ordering laboratory is a qualified provider per health-plan policy"
+            ],
+            "Source": "Test Specific Guidelines > Li-Fraumeni Syndrome Genetic Testing > Criteria (TOC: S3.63.1) > TP53 Known Familial Mutation Analysis"
+          },
+          {
+            "Guideline Category": "TP53 Sequence Analysis",
+            "Required findings": [
+              "Pre- and post-test genetic counseling by an approved provider",
+              "No prior TP53 sequencing and no known familial TP53 mutation",
+              "Patient meets Classic Li-Fraumeni criteria: (a) diagnosed with a sarcoma before age 45, (b) first-degree relative with cancer before age 45, and (c) additional first- or second-degree relative with cancer before age 45 or a sarcoma at any age",
+              "OR patient meets any 2015 Chompret criterion, including: tumor from LFS spectrum before age 46 with a first- or second-degree relative with LFS-spectrum cancer before age 56; multiple LFS-spectrum tumors with first tumor before age 46; adrenocortical carcinoma, choroid plexus carcinoma, or embryonal rhabdomyosarcoma at any age; breast cancer diagnosed before age 31; tumor from LFS spectrum plus a biologic relative with clinical LFS diagnosis and no known family mutation; hypodiploid ALL diagnosed before age 21",
+              "Ordering laboratory is a qualified provider per health-plan policy"
+            ],
+            "Source": "Test Specific Guidelines > Li-Fraumeni Syndrome Genetic Testing > Criteria (TOC: S3.63.1) > TP53 Sequence Analysis"
+          },
+          {
+            "Guideline Category": "TP53 Deletion/Duplication Analysis",
+            "Required findings": [
+              "Pre- and post-test genetic counseling by an approved provider",
+              "No prior TP53 deletion/duplication analysis and no mutation identified on full TP53 sequencing",
+              "Patient meets the same clinical criteria required for TP53 sequence analysis (Classic LFS or any 2015 Chompret criterion) for diagnostic or presymptomatic testing",
+              "Ordering laboratory is a qualified provider per health-plan policy"
+            ],
+            "Source": "Test Specific Guidelines > Li-Fraumeni Syndrome Genetic Testing > Criteria (TOC: S3.63.1) > TP53 Deletion/Duplication Analysis"
+          }
+        ],
+        "Non-Indications": [
+          "Prior genetic testing that already identified a pathogenic TP53 familial mutation",
+          "Prior TP53 sequencing performed regardless of result",
+          "Prior TP53 deletion/duplication analysis performed",
+          "Absence of a known familial TP53 mutation and failure to meet Classic Li-Fraumeni or any 2015 Chompret criteria",
+          "Asymptomatic individuals without a biologic relative who meets clinical LFS diagnosis",
+          "Requests for multigene panel testing without a separate TP53 indication (policy directs to separate multigene guideline)"
+        ],
+        "Important criteria & exceptions": [
+          "Both pre‑test and post‑test genetic counseling must be documented",
+          "The ordering laboratory must be a qualified provider as defined by the health‑plan policy",
+          "Testing may be performed as part of a multigene panel only if the panel is addressed in the separate Hereditary Cancer Syndrome Multigene Panels guideline",
+          "Germline testing after somatic tumor testing is governed by a different guideline and is not covered under this section"
+        ],
+        "Documentation required": [
+          "Pre‑test genetic counseling note signed by an approved provider",
+          "Post‑test genetic counseling note signed by an approved provider",
+          "Comprehensive family pedigree documenting ages at cancer diagnoses, tumor histologies, and degree of relationship",
+          "Pathology or oncology reports confirming the proband’s tumor type and age at diagnosis",
+          "Medical records confirming ages and cancer types for affected first‑, second‑ or third‑degree relatives",
+          "Prior genetic testing reports showing no TP53 testing or negative TP53 sequencing results (when applicable)",
+          "Laboratory certification or contract confirming the ordering lab is a qualified provider per health‑plan policy",
+          "Consent form for germline genetic testing"
+        ]
+      }
+    },
+    {
+      "id": "Q14",
+      "type": "NO",
+      "cpt": "85025",
+      "query": "Does a routine Complete Blood Count CBC with automated differential 85025 require commercial prior authorization?",
+      "elapsed_seconds": 24.99,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "No",
+        "matched_cpts": [],
+        "desc": ""
+      },
+      "stage2_toc_routing": {
+        "pass": false,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S4.4"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 0,
+        "status": "Clean (No irrelevant chunks pulled)"
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "status": "Correctly marked No Prior Auth"
+      },
+      "end_to_end_pass": false,
+      "synthesized_json": {
+        "Prior auth required": "No",
+        "Policy Name": "None Identified",
+        "Referred Sections": [],
+        "Medical necessity indications": [],
+        "Notice": "Routine procedure (CPT 85025) does not require commercial prior authorization."
+      }
+    },
+    {
+      "id": "Q15",
+      "type": "NO",
+      "cpt": "80053",
+      "query": "Is prior authorization required for Comprehensive Metabolic Panel CMP 80053 during a routine annual health exam?",
+      "elapsed_seconds": 9.63,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "No",
+        "matched_cpts": [],
+        "desc": ""
+      },
+      "stage2_toc_routing": {
+        "pass": false,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S4.4"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 0,
+        "status": "Clean (No irrelevant chunks pulled)"
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "status": "Correctly marked No Prior Auth"
+      },
+      "end_to_end_pass": false,
+      "synthesized_json": {
+        "Prior auth required": "No",
+        "Policy Name": "None Identified",
+        "Referred Sections": [],
+        "Medical necessity indications": [],
+        "Notice": "Routine procedure (CPT 80053) does not require commercial prior authorization."
+      }
+    },
+    {
+      "id": "Q16",
+      "type": "NO",
+      "cpt": "80061",
+      "query": "What is the prior authorization status for routine Lipid Panel 80061 checking total cholesterol, HDL, LDL, and triglycerides?",
+      "elapsed_seconds": 2.96,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "No",
+        "matched_cpts": [],
+        "desc": ""
+      },
+      "stage2_toc_routing": {
+        "pass": false,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S4.6"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 0,
+        "status": "Clean (No irrelevant chunks pulled)"
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "status": "Correctly marked No Prior Auth"
+      },
+      "end_to_end_pass": false,
+      "synthesized_json": {
+        "Prior auth required": "No",
+        "Policy Name": "None Identified",
+        "Referred Sections": [],
+        "Medical necessity indications": [],
+        "Notice": "Routine procedure (CPT 80061) does not require commercial prior authorization."
+      }
+    },
+    {
+      "id": "Q17",
+      "type": "NO",
+      "cpt": "83036",
+      "query": "Does standard outpatient Hemoglobin A1c HbA1c testing 83036 for diabetes monitoring require prior authorization?",
+      "elapsed_seconds": 11.67,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "No",
+        "matched_cpts": [],
+        "desc": ""
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": null,
+        "routed_tocs": []
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 0,
+        "status": "Clean (No irrelevant chunks pulled)"
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "status": "Correctly marked No Prior Auth"
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "No",
+        "Policy Name": "None Identified",
+        "Referred Sections": [],
+        "Medical necessity indications": [],
+        "Notice": "Routine procedure (CPT 83036) does not require commercial prior authorization."
+      }
+    },
+    {
+      "id": "Q18",
+      "type": "NO",
+      "cpt": "84443",
+      "query": "Does serum Thyroid Stimulating Hormone TSH 84443 laboratory screening require prior authorization?",
+      "elapsed_seconds": 3.28,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "No",
+        "matched_cpts": [],
+        "desc": ""
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": null,
+        "routed_tocs": []
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 0,
+        "status": "Clean (No irrelevant chunks pulled)"
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "status": "Correctly marked No Prior Auth"
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "No",
+        "Policy Name": "None Identified",
+        "Referred Sections": [],
+        "Medical necessity indications": [],
+        "Notice": "Routine procedure (CPT 84443) does not require commercial prior authorization."
+      }
+    },
+    {
+      "id": "Q19",
+      "type": "NO",
+      "cpt": "82306",
+      "query": "Is commercial prior authorization needed for Vitamin D 25-hydroxy lab assessment 82306?",
+      "elapsed_seconds": 11.98,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "No",
+        "matched_cpts": [],
+        "desc": ""
+      },
+      "stage2_toc_routing": {
+        "pass": false,
+        "routed_doc": "Cigna_Lab_Management",
+        "routed_tocs": [
+          "S4.4"
+        ]
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 0,
+        "status": "Clean (No irrelevant chunks pulled)"
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "status": "Correctly marked No Prior Auth"
+      },
+      "end_to_end_pass": false,
+      "synthesized_json": {
+        "Prior auth required": "No",
+        "Policy Name": "None Identified",
+        "Referred Sections": [],
+        "Medical necessity indications": [],
+        "Notice": "Routine procedure (CPT 82306) does not require commercial prior authorization."
+      }
+    },
+    {
+      "id": "Q20",
+      "type": "NO",
+      "cpt": "81003",
+      "query": "Does automated routine urinalysis without microscopy 81003 require prior authorization?",
+      "elapsed_seconds": 6.86,
+      "stage1_cpt_lookup": {
+        "pass": true,
+        "pred_prior_auth": "No",
+        "matched_cpts": [],
+        "desc": ""
+      },
+      "stage2_toc_routing": {
+        "pass": true,
+        "routed_doc": null,
+        "routed_tocs": []
+      },
+      "stage3_scoped_retrieval": {
+        "pass": true,
+        "num_retrieved": 0,
+        "status": "Clean (No irrelevant chunks pulled)"
+      },
+      "stage4_clinical_synthesis": {
+        "pass": true,
+        "status": "Correctly marked No Prior Auth"
+      },
+      "end_to_end_pass": true,
+      "synthesized_json": {
+        "Prior auth required": "No",
+        "Policy Name": "None Identified",
+        "Referred Sections": [],
+        "Medical necessity indications": [],
+        "Notice": "Routine procedure (CPT 81003) does not require commercial prior authorization."
+      }
+    }
+  ]
+}
