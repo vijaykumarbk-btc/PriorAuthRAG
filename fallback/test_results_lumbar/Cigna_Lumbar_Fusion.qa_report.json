@@ -1,0 +1,17 @@
+{
+  "pipeline_used": "docling_hierarchical",
+  "escalated_from_main": false,
+  "page_count": 50,
+  "total_blocks": 1552,
+  "total_headings": 969,
+  "total_tables": 6,
+  "heading_source_breakdown": {
+    "docling_hierarchical": 969
+  },
+  "detected_page_offset": null,
+  "unmatched_entries": [],
+  "warnings": [
+    "SANITY ALERT: Heading density is implausibly high (969 headings vs 231 paragraphs).",
+    "SANITY ALERT: Markdown hash-line count (286) does not match JSON heading count (969)."
+  ]
+}
