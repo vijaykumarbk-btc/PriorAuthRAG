@@ -23,14 +23,7 @@
       "metadata_file": "../Lab_Management/embeddings/lab_management_metadata.json",
       "embeddings_file": "../Lab_Management/embeddings/lab_management_embeddings.npy",
       "bm25_file": "../Lab_Management/bm25/lab_management_bm25.pkl"
-    },
-    {
-      "doc_key": "Cigna_Knee",
-      "display_name": "Cigna Knee Surgery (CMM-312)",
-      "toc_file": "../data/policies/Cigna_Knee/toc/Cigna_Knee_toc_output.json",
-      "metadata_file": "../data/policies/Cigna_Knee/embeddings/Cigna_Knee_metadata.json",
-      "embeddings_file": "../data/policies/Cigna_Knee/embeddings/Cigna_Knee_embeddings.npy",
-      "bm25_file": "../data/policies/Cigna_Knee/bm25/Cigna_Knee_bm25.pkl"
     }
   ]
 }
+
