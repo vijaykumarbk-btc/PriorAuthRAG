@@ -2951,23 +2951,13 @@
           "type": "list",
           "page": 45,
           "text": "Reasonable use: The usefulness of the test is not significantly offset by negative factors, such as expense, clinical risk, or social or ethical challenges."
-        }
-      ],
-      "toc_id": "S2.7"
-    },
-    {
-      "block_id": "b00475",
-      "heading_level": 3,
-      "title": "Criteria:",
-      "page": 45,
-      "heading_path": [
-        "Clinical Use Guidelines",
-        "Genetic Testing for Non-Medical Purposes",
-        "Criteria:"
-      ],
-      "docling_section_id": "s0002",
-      "section_title": "Clinical Use Guidelines",
-      "content": [
+        },
+        {
+          "block_id": "b00475",
+          "type": "paragraph",
+          "page": 45,
+          "text": "Criteria:"
+        },
         {
           "block_id": "b00476",
           "type": "paragraph",
@@ -3017,7 +3007,7 @@
           "text": "Beauty care: testing for genetic variants to optimize beauty products, skin care ingredients or supplement selection"
         }
       ],
-      "toc_id": "S2.7.1"
+      "toc_id": "S2.7"
     },
     {
       "block_id": "b00484",
@@ -3066,13 +3056,23 @@
           "type": "paragraph",
           "page": 46,
           "text": "This benefit/harm statement only applies to those jurisdictions that do not have Medicare guidance. Based upon the clinical policy, following EviCore's criteria for genetic testing for prenatal screening and diagnostic testing will ensure that testing will be available to those members most likely to benefit from a genetic diagnosis. For those not meeting criteria, it ensures alternate diagnostic/management strategies are considered. However, it is possible that some members who would benefit from the testing, but do not meet criteria, will not receive an immediate approval for testing."
-        },
-        {
-          "block_id": "b00491",
-          "type": "paragraph",
-          "page": 46,
-          "text": "Criteria"
-        },
+        }
+      ],
+      "toc_id": "S2.8"
+    },
+    {
+      "block_id": "b00491",
+      "heading_level": 3,
+      "title": "Criteria",
+      "page": 46,
+      "heading_path": [
+        "Clinical Use Guidelines",
+        "Genetic Testing for Prenatal Screening and Diagnostic Testing",
+        "Criteria"
+      ],
+      "docling_section_id": "s0002",
+      "section_title": "Clinical Use Guidelines",
+      "content": [
         {
           "block_id": "b00492",
           "type": "paragraph",
@@ -3248,7 +3248,7 @@
           "text": "Test-specific guidelines are available for some prenatal screening tests and diagnostic tests. For tests without a specific guideline, use the General Coverage Guidance above."
         }
       ],
-      "toc_id": "S2.8"
+      "toc_id": "S2.8.1"
     },
     {
       "block_id": "b00521",
@@ -3270,7 +3270,7 @@
           "text": "ACOG Practice Bulletin. Cytomegalovirus, Parvovirus B19, Varicella Zoster, and Toxoplasmosis in Pregnancy. Number 151, June 2015 (reaffirmed 2024). Obstet Gynecol. 2015;125(6):1510-1525."
         }
       ],
-      "toc_id": "S2.8.1"
+      "toc_id": "S2.8.2"
     },
     {
       "block_id": "b00523",
@@ -88721,125 +88721,63 @@
               "type": "list",
               "page": 45,
               "text": "Reasonable use: The usefulness of the test is not significantly offset by negative factors, such as expense, clinical risk, or social or ethical challenges."
-            }
-          ],
-          "children": [
+            },
             {
               "block_id": "b00475",
-              "heading_level": 3,
-              "title": "Criteria:",
+              "type": "paragraph",
               "page": 45,
-              "heading_path": [
-                "Clinical Use Guidelines",
-                "Genetic Testing for Non-Medical Purposes",
-                "Criteria:"
-              ],
-              "docling_section_id": "s0002",
-              "section_title": "Clinical Use Guidelines",
-              "content": [
-                {
-                  "block_id": "b00476",
-                  "type": "paragraph",
-                  "page": 45,
-                  "text": "The following types of testing are not considered medically necessary and therefore, not eligible for reimbursement:"
-                },
-                {
-                  "block_id": "b00477",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Genome-wide association studies (GWAS): testing a large number of genetic variations spread across the whole genome for disease associations, generally done for information outside of a specific clinical need or context"
-                },
-                {
-                  "block_id": "b00478",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Paternity testing: testing to establish biological relationships, often between a father and child(ren) but sometimes to determine other kinds of relationships (siblings, grandparents, etc.)"
-                },
-                {
-                  "block_id": "b00479",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Ancestry testing: testing that helps people discover more about the genetic makeup of their ancestors, generally used by genealogists and those interested in family history"
-                },
-                {
-                  "block_id": "b00480",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Nutritional testing: for variations in metabolism pathways that may suggest vitamin or other nutritional supplements"
-                },
-                {
-                  "block_id": "b00481",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Athletic ability or fitness: Testing to predict athletic performance types"
-                },
-                {
-                  "block_id": "b00482",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Genetic testing related to dating services"
-                },
-                {
-                  "block_id": "b00483",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Beauty care: testing for genetic variants to optimize beauty products, skin care ingredients or supplement selection"
-                }
-              ],
-              "children": [],
-              "content_all": [
-                {
-                  "block_id": "b00476",
-                  "type": "paragraph",
-                  "page": 45,
-                  "text": "The following types of testing are not considered medically necessary and therefore, not eligible for reimbursement:"
-                },
-                {
-                  "block_id": "b00477",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Genome-wide association studies (GWAS): testing a large number of genetic variations spread across the whole genome for disease associations, generally done for information outside of a specific clinical need or context"
-                },
-                {
-                  "block_id": "b00478",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Paternity testing: testing to establish biological relationships, often between a father and child(ren) but sometimes to determine other kinds of relationships (siblings, grandparents, etc.)"
-                },
-                {
-                  "block_id": "b00479",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Ancestry testing: testing that helps people discover more about the genetic makeup of their ancestors, generally used by genealogists and those interested in family history"
-                },
-                {
-                  "block_id": "b00480",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Nutritional testing: for variations in metabolism pathways that may suggest vitamin or other nutritional supplements"
-                },
-                {
-                  "block_id": "b00481",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Athletic ability or fitness: Testing to predict athletic performance types"
-                },
-                {
-                  "block_id": "b00482",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Genetic testing related to dating services"
-                },
-                {
-                  "block_id": "b00483",
-                  "type": "list",
-                  "page": 45,
-                  "text": "Beauty care: testing for genetic variants to optimize beauty products, skin care ingredients or supplement selection"
-                }
-              ],
-              "toc_id": "S2.7.1"
+              "text": "Criteria:"
+            },
+            {
+              "block_id": "b00476",
+              "type": "paragraph",
+              "page": 45,
+              "text": "The following types of testing are not considered medically necessary and therefore, not eligible for reimbursement:"
+            },
+            {
+              "block_id": "b00477",
+              "type": "list",
+              "page": 45,
+              "text": "Genome-wide association studies (GWAS): testing a large number of genetic variations spread across the whole genome for disease associations, generally done for information outside of a specific clinical need or context"
+            },
+            {
+              "block_id": "b00478",
+              "type": "list",
+              "page": 45,
+              "text": "Paternity testing: testing to establish biological relationships, often between a father and child(ren) but sometimes to determine other kinds of relationships (siblings, grandparents, etc.)"
+            },
+            {
+              "block_id": "b00479",
+              "type": "list",
+              "page": 45,
+              "text": "Ancestry testing: testing that helps people discover more about the genetic makeup of their ancestors, generally used by genealogists and those interested in family history"
+            },
+            {
+              "block_id": "b00480",
+              "type": "list",
+              "page": 45,
+              "text": "Nutritional testing: for variations in metabolism pathways that may suggest vitamin or other nutritional supplements"
+            },
+            {
+              "block_id": "b00481",
+              "type": "list",
+              "page": 45,
+              "text": "Athletic ability or fitness: Testing to predict athletic performance types"
+            },
+            {
+              "block_id": "b00482",
+              "type": "list",
+              "page": 45,
+              "text": "Genetic testing related to dating services"
+            },
+            {
+              "block_id": "b00483",
+              "type": "list",
+              "page": 45,
+              "text": "Beauty care: testing for genetic variants to optimize beauty products, skin care ingredients or supplement selection"
             }
           ],
+          "children": [],
           "content_all": [
             {
               "block_id": "b00470",
@@ -88870,6 +88808,12 @@
               "type": "list",
               "page": 45,
               "text": "Reasonable use: The usefulness of the test is not significantly offset by negative factors, such as expense, clinical risk, or social or ethical challenges."
+            },
+            {
+              "block_id": "b00475",
+              "type": "paragraph",
+              "page": 45,
+              "text": "Criteria:"
             },
             {
               "block_id": "b00476",
@@ -88969,189 +88913,376 @@
               "type": "paragraph",
               "page": 46,
               "text": "This benefit/harm statement only applies to those jurisdictions that do not have Medicare guidance. Based upon the clinical policy, following EviCore's criteria for genetic testing for prenatal screening and diagnostic testing will ensure that testing will be available to those members most likely to benefit from a genetic diagnosis. For those not meeting criteria, it ensures alternate diagnostic/management strategies are considered. However, it is possible that some members who would benefit from the testing, but do not meet criteria, will not receive an immediate approval for testing."
-            },
-            {
-              "block_id": "b00491",
-              "type": "paragraph",
-              "page": 46,
-              "text": "Criteria"
-            },
-            {
-              "block_id": "b00492",
-              "type": "paragraph",
-              "page": 46,
-              "text": "Criteria: General Coverage Guidance"
-            },
-            {
-              "block_id": "b00493",
-              "type": "paragraph",
-              "page": 46,
-              "text": "Genetic testing for prenatal screening and diagnostic testing is medically necessary when ALL of the following conditions are met:"
-            },
-            {
-              "block_id": "b00494",
-              "type": "list",
-              "page": 46,
-              "text": "Technical and clinical validity : The test must be accurate, sensitive and specific, based on sufficient, quality scientific evidence to support the claims of the test."
-            },
-            {
-              "block_id": "b00495",
-              "type": "paragraph",
-              "page": 46,
-              "text": "©2026 EviCore by EVERNORTH"
-            },
-            {
-              "block_id": "b00496",
-              "type": "paragraph",
-              "page": 46,
-              "text": "730 Cool Springs Blvd, Franklin, TN 37067 (800) 918-8924"
-            },
-            {
-              "block_id": "b00497",
-              "type": "paragraph",
-              "page": 46,
-              "text": "These guidelines apply to services or supplies managed by EviCore for Cigna as outlined by the  Cigna CPT  list."
-            },
-            {
-              "block_id": "b00498",
-              "type": "list",
-              "page": 47,
-              "text": "Clinical utility : Healthcare providers can use the test results to provide significantly better medical care and/or assist patients with reproductive planning."
-            },
-            {
-              "block_id": "b00499",
-              "type": "list",
-              "page": 47,
-              "text": "Reasonable use : The usefulness of the test is not significantly offset by negative factors, such as expense, clinical risk, or social or ethical challenges."
-            },
-            {
-              "block_id": "b00500",
-              "type": "paragraph",
-              "page": 47,
-              "text": "Limits:"
-            },
-            {
-              "block_id": "b00501",
-              "type": "list",
-              "page": 47,
-              "text": "Testing will only be covered for the number of genes or tests necessary to establish a prenatal diagnosis. A tiered approach to testing, with reflex to more detailed testing and/or different genes, will be required when clinically possible."
-            },
-            {
-              "block_id": "b00502",
-              "type": "list",
-              "page": 47,
-              "text": "Prenatal diagnostic testing is medically necessary once per pregnancy. Exceptions may be considered if ambiguous results require retesting for clarification."
-            },
-            {
-              "block_id": "b00503",
-              "type": "list",
-              "page": 47,
-              "text": "If prenatal samples are studied concurrently with a maternal DNA sample to rule out prenatal analytic errors due to maternal cell contamination, a single unit of CPT code 81265 is reimbursable."
-            },
-            {
-              "block_id": "b00504",
-              "type": "paragraph",
-              "page": 47,
-              "text": "Criteria: Special Prenatal Diagnosis Circumstances"
-            },
-            {
-              "block_id": "b00505",
-              "type": "paragraph",
-              "page": 47,
-              "text": "Each of the following sections addresses a group of tests that are used for similar purposes in pregnancy. Because a variety of tests may be used, but the circumstances that justify testing are the same, individual test-specific policies are not necessary."
-            },
-            {
-              "block_id": "b00506",
-              "type": "paragraph",
-              "page": 47,
-              "text": "Prenatal diagnostic testing based on family history"
-            },
-            {
-              "block_id": "b00507",
-              "type": "paragraph",
-              "page": 47,
-              "text": "Prenatal genetic testing, generally by amniocentesis or CVS, for the diagnosis of a genetic condition is medically necessary when the following conditions are met:"
-            },
-            {
-              "block_id": "b00508",
-              "type": "list",
-              "page": 47,
-              "text": "The pregnancy is at an increased risk for a genetic disease based on the inheritance pattern of the disorder in question and ANY of the following:"
-            },
-            {
-              "block_id": "b00509",
-              "type": "list",
-              "page": 47,
-              "text": "At least one parent is known or suspected to be a carrier of a genetic condition based on the family history and/or previous carrier testing results; or"
-            },
-            {
-              "block_id": "b00510",
-              "type": "list",
-              "page": 47,
-              "text": "One or both parent(s) are affected with a genetic condition; or"
-            },
-            {
-              "block_id": "b00511",
-              "type": "list",
-              "page": 47,
-              "text": "A sibling is affected with a genetic condition; AND"
-            },
-            {
-              "block_id": "b00512",
-              "type": "list",
-              "page": 47,
-              "text": "The genetic condition is associated with potentially severe disability or has a lethal natural history."
-            },
-            {
-              "block_id": "b00513",
-              "type": "paragraph",
-              "page": 47,
-              "text": "Fetal infectious disease testing"
-            },
-            {
-              "block_id": "b00514",
-              "type": "paragraph",
-              "page": 47,
-              "text": "Genetic testing may be used for the diagnosis of an infectious disease (e.g., cytomegalovirus, toxoplasmosis, parvovirus B19, and varicella zoster) in a fetus according to current guidelines from the American College of Obstetricians and Gynecologists (ACOG). 1 Prenatal testing, generally by amniocentesis or CVS, is medically necessary when ANY of the following conditions are met:"
-            },
-            {
-              "block_id": "b00515",
-              "type": "list",
-              "page": 47,
-              "text": "Clinical signs and symptoms of a current infection in the mother; OR"
-            },
-            {
-              "block_id": "b00516",
-              "type": "list",
-              "page": 47,
-              "text": "Serologic evidence of a current or recent infection in the mother (with or without clinical signs); OR"
-            },
-            {
-              "block_id": "b00517",
-              "type": "paragraph",
-              "page": 47,
-              "text": "730 Cool Springs Blvd, Franklin, TN 37067 (800) 918-8924"
-            },
-            {
-              "block_id": "b00518",
-              "type": "list",
-              "page": 48,
-              "text": "Fetal abnormalities identified on ultrasound indicating an increased risk for a congenital infection"
-            },
-            {
-              "block_id": "b00519",
-              "type": "paragraph",
-              "page": 48,
-              "text": "Criteria: Test-specific Guidelines"
-            },
-            {
-              "block_id": "b00520",
-              "type": "list",
-              "page": 48,
-              "text": "Test-specific guidelines are available for some prenatal screening tests and diagnostic tests. For tests without a specific guideline, use the General Coverage Guidance above."
             }
           ],
           "children": [
+            {
+              "block_id": "b00491",
+              "heading_level": 3,
+              "title": "Criteria",
+              "page": 46,
+              "heading_path": [
+                "Clinical Use Guidelines",
+                "Genetic Testing for Prenatal Screening and Diagnostic Testing",
+                "Criteria"
+              ],
+              "docling_section_id": "s0002",
+              "section_title": "Clinical Use Guidelines",
+              "content": [
+                {
+                  "block_id": "b00492",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "Criteria: General Coverage Guidance"
+                },
+                {
+                  "block_id": "b00493",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "Genetic testing for prenatal screening and diagnostic testing is medically necessary when ALL of the following conditions are met:"
+                },
+                {
+                  "block_id": "b00494",
+                  "type": "list",
+                  "page": 46,
+                  "text": "Technical and clinical validity : The test must be accurate, sensitive and specific, based on sufficient, quality scientific evidence to support the claims of the test."
+                },
+                {
+                  "block_id": "b00495",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "©2026 EviCore by EVERNORTH"
+                },
+                {
+                  "block_id": "b00496",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "730 Cool Springs Blvd, Franklin, TN 37067 (800) 918-8924"
+                },
+                {
+                  "block_id": "b00497",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "These guidelines apply to services or supplies managed by EviCore for Cigna as outlined by the  Cigna CPT  list."
+                },
+                {
+                  "block_id": "b00498",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Clinical utility : Healthcare providers can use the test results to provide significantly better medical care and/or assist patients with reproductive planning."
+                },
+                {
+                  "block_id": "b00499",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Reasonable use : The usefulness of the test is not significantly offset by negative factors, such as expense, clinical risk, or social or ethical challenges."
+                },
+                {
+                  "block_id": "b00500",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Limits:"
+                },
+                {
+                  "block_id": "b00501",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Testing will only be covered for the number of genes or tests necessary to establish a prenatal diagnosis. A tiered approach to testing, with reflex to more detailed testing and/or different genes, will be required when clinically possible."
+                },
+                {
+                  "block_id": "b00502",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Prenatal diagnostic testing is medically necessary once per pregnancy. Exceptions may be considered if ambiguous results require retesting for clarification."
+                },
+                {
+                  "block_id": "b00503",
+                  "type": "list",
+                  "page": 47,
+                  "text": "If prenatal samples are studied concurrently with a maternal DNA sample to rule out prenatal analytic errors due to maternal cell contamination, a single unit of CPT code 81265 is reimbursable."
+                },
+                {
+                  "block_id": "b00504",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Criteria: Special Prenatal Diagnosis Circumstances"
+                },
+                {
+                  "block_id": "b00505",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Each of the following sections addresses a group of tests that are used for similar purposes in pregnancy. Because a variety of tests may be used, but the circumstances that justify testing are the same, individual test-specific policies are not necessary."
+                },
+                {
+                  "block_id": "b00506",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Prenatal diagnostic testing based on family history"
+                },
+                {
+                  "block_id": "b00507",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Prenatal genetic testing, generally by amniocentesis or CVS, for the diagnosis of a genetic condition is medically necessary when the following conditions are met:"
+                },
+                {
+                  "block_id": "b00508",
+                  "type": "list",
+                  "page": 47,
+                  "text": "The pregnancy is at an increased risk for a genetic disease based on the inheritance pattern of the disorder in question and ANY of the following:"
+                },
+                {
+                  "block_id": "b00509",
+                  "type": "list",
+                  "page": 47,
+                  "text": "At least one parent is known or suspected to be a carrier of a genetic condition based on the family history and/or previous carrier testing results; or"
+                },
+                {
+                  "block_id": "b00510",
+                  "type": "list",
+                  "page": 47,
+                  "text": "One or both parent(s) are affected with a genetic condition; or"
+                },
+                {
+                  "block_id": "b00511",
+                  "type": "list",
+                  "page": 47,
+                  "text": "A sibling is affected with a genetic condition; AND"
+                },
+                {
+                  "block_id": "b00512",
+                  "type": "list",
+                  "page": 47,
+                  "text": "The genetic condition is associated with potentially severe disability or has a lethal natural history."
+                },
+                {
+                  "block_id": "b00513",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Fetal infectious disease testing"
+                },
+                {
+                  "block_id": "b00514",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Genetic testing may be used for the diagnosis of an infectious disease (e.g., cytomegalovirus, toxoplasmosis, parvovirus B19, and varicella zoster) in a fetus according to current guidelines from the American College of Obstetricians and Gynecologists (ACOG). 1 Prenatal testing, generally by amniocentesis or CVS, is medically necessary when ANY of the following conditions are met:"
+                },
+                {
+                  "block_id": "b00515",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Clinical signs and symptoms of a current infection in the mother; OR"
+                },
+                {
+                  "block_id": "b00516",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Serologic evidence of a current or recent infection in the mother (with or without clinical signs); OR"
+                },
+                {
+                  "block_id": "b00517",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "730 Cool Springs Blvd, Franklin, TN 37067 (800) 918-8924"
+                },
+                {
+                  "block_id": "b00518",
+                  "type": "list",
+                  "page": 48,
+                  "text": "Fetal abnormalities identified on ultrasound indicating an increased risk for a congenital infection"
+                },
+                {
+                  "block_id": "b00519",
+                  "type": "paragraph",
+                  "page": 48,
+                  "text": "Criteria: Test-specific Guidelines"
+                },
+                {
+                  "block_id": "b00520",
+                  "type": "list",
+                  "page": 48,
+                  "text": "Test-specific guidelines are available for some prenatal screening tests and diagnostic tests. For tests without a specific guideline, use the General Coverage Guidance above."
+                }
+              ],
+              "children": [],
+              "content_all": [
+                {
+                  "block_id": "b00492",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "Criteria: General Coverage Guidance"
+                },
+                {
+                  "block_id": "b00493",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "Genetic testing for prenatal screening and diagnostic testing is medically necessary when ALL of the following conditions are met:"
+                },
+                {
+                  "block_id": "b00494",
+                  "type": "list",
+                  "page": 46,
+                  "text": "Technical and clinical validity : The test must be accurate, sensitive and specific, based on sufficient, quality scientific evidence to support the claims of the test."
+                },
+                {
+                  "block_id": "b00495",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "©2026 EviCore by EVERNORTH"
+                },
+                {
+                  "block_id": "b00496",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "730 Cool Springs Blvd, Franklin, TN 37067 (800) 918-8924"
+                },
+                {
+                  "block_id": "b00497",
+                  "type": "paragraph",
+                  "page": 46,
+                  "text": "These guidelines apply to services or supplies managed by EviCore for Cigna as outlined by the  Cigna CPT  list."
+                },
+                {
+                  "block_id": "b00498",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Clinical utility : Healthcare providers can use the test results to provide significantly better medical care and/or assist patients with reproductive planning."
+                },
+                {
+                  "block_id": "b00499",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Reasonable use : The usefulness of the test is not significantly offset by negative factors, such as expense, clinical risk, or social or ethical challenges."
+                },
+                {
+                  "block_id": "b00500",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Limits:"
+                },
+                {
+                  "block_id": "b00501",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Testing will only be covered for the number of genes or tests necessary to establish a prenatal diagnosis. A tiered approach to testing, with reflex to more detailed testing and/or different genes, will be required when clinically possible."
+                },
+                {
+                  "block_id": "b00502",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Prenatal diagnostic testing is medically necessary once per pregnancy. Exceptions may be considered if ambiguous results require retesting for clarification."
+                },
+                {
+                  "block_id": "b00503",
+                  "type": "list",
+                  "page": 47,
+                  "text": "If prenatal samples are studied concurrently with a maternal DNA sample to rule out prenatal analytic errors due to maternal cell contamination, a single unit of CPT code 81265 is reimbursable."
+                },
+                {
+                  "block_id": "b00504",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Criteria: Special Prenatal Diagnosis Circumstances"
+                },
+                {
+                  "block_id": "b00505",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Each of the following sections addresses a group of tests that are used for similar purposes in pregnancy. Because a variety of tests may be used, but the circumstances that justify testing are the same, individual test-specific policies are not necessary."
+                },
+                {
+                  "block_id": "b00506",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Prenatal diagnostic testing based on family history"
+                },
+                {
+                  "block_id": "b00507",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Prenatal genetic testing, generally by amniocentesis or CVS, for the diagnosis of a genetic condition is medically necessary when the following conditions are met:"
+                },
+                {
+                  "block_id": "b00508",
+                  "type": "list",
+                  "page": 47,
+                  "text": "The pregnancy is at an increased risk for a genetic disease based on the inheritance pattern of the disorder in question and ANY of the following:"
+                },
+                {
+                  "block_id": "b00509",
+                  "type": "list",
+                  "page": 47,
+                  "text": "At least one parent is known or suspected to be a carrier of a genetic condition based on the family history and/or previous carrier testing results; or"
+                },
+                {
+                  "block_id": "b00510",
+                  "type": "list",
+                  "page": 47,
+                  "text": "One or both parent(s) are affected with a genetic condition; or"
+                },
+                {
+                  "block_id": "b00511",
+                  "type": "list",
+                  "page": 47,
+                  "text": "A sibling is affected with a genetic condition; AND"
+                },
+                {
+                  "block_id": "b00512",
+                  "type": "list",
+                  "page": 47,
+                  "text": "The genetic condition is associated with potentially severe disability or has a lethal natural history."
+                },
+                {
+                  "block_id": "b00513",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Fetal infectious disease testing"
+                },
+                {
+                  "block_id": "b00514",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "Genetic testing may be used for the diagnosis of an infectious disease (e.g., cytomegalovirus, toxoplasmosis, parvovirus B19, and varicella zoster) in a fetus according to current guidelines from the American College of Obstetricians and Gynecologists (ACOG). 1 Prenatal testing, generally by amniocentesis or CVS, is medically necessary when ANY of the following conditions are met:"
+                },
+                {
+                  "block_id": "b00515",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Clinical signs and symptoms of a current infection in the mother; OR"
+                },
+                {
+                  "block_id": "b00516",
+                  "type": "list",
+                  "page": 47,
+                  "text": "Serologic evidence of a current or recent infection in the mother (with or without clinical signs); OR"
+                },
+                {
+                  "block_id": "b00517",
+                  "type": "paragraph",
+                  "page": 47,
+                  "text": "730 Cool Springs Blvd, Franklin, TN 37067 (800) 918-8924"
+                },
+                {
+                  "block_id": "b00518",
+                  "type": "list",
+                  "page": 48,
+                  "text": "Fetal abnormalities identified on ultrasound indicating an increased risk for a congenital infection"
+                },
+                {
+                  "block_id": "b00519",
+                  "type": "paragraph",
+                  "page": 48,
+                  "text": "Criteria: Test-specific Guidelines"
+                },
+                {
+                  "block_id": "b00520",
+                  "type": "list",
+                  "page": 48,
+                  "text": "Test-specific guidelines are available for some prenatal screening tests and diagnostic tests. For tests without a specific guideline, use the General Coverage Guidance above."
+                }
+              ],
+              "toc_id": "S2.8.1"
+            },
             {
               "block_id": "b00521",
               "heading_level": 3,
@@ -89181,7 +89312,7 @@
                   "text": "ACOG Practice Bulletin. Cytomegalovirus, Parvovirus B19, Varicella Zoster, and Toxoplasmosis in Pregnancy. Number 151, June 2015 (reaffirmed 2024). Obstet Gynecol. 2015;125(6):1510-1525."
                 }
               ],
-              "toc_id": "S2.8.1"
+              "toc_id": "S2.8.2"
             }
           ],
           "content_all": [
@@ -89220,12 +89351,6 @@
               "type": "paragraph",
               "page": 46,
               "text": "This benefit/harm statement only applies to those jurisdictions that do not have Medicare guidance. Based upon the clinical policy, following EviCore's criteria for genetic testing for prenatal screening and diagnostic testing will ensure that testing will be available to those members most likely to benefit from a genetic diagnosis. For those not meeting criteria, it ensures alternate diagnostic/management strategies are considered. However, it is possible that some members who would benefit from the testing, but do not meet criteria, will not receive an immediate approval for testing."
-            },
-            {
-              "block_id": "b00491",
-              "type": "paragraph",
-              "page": 46,
-              "text": "Criteria"
             },
             {
               "block_id": "b00492",
@@ -105348,6 +105473,12 @@
           "text": "Reasonable use: The usefulness of the test is not significantly offset by negative factors, such as expense, clinical risk, or social or ethical challenges."
         },
         {
+          "block_id": "b00475",
+          "type": "paragraph",
+          "page": 45,
+          "text": "Criteria:"
+        },
+        {
           "block_id": "b00476",
           "type": "paragraph",
           "page": 45,
@@ -105430,12 +105561,6 @@
           "type": "paragraph",
           "page": 46,
           "text": "This benefit/harm statement only applies to those jurisdictions that do not have Medicare guidance. Based upon the clinical policy, following EviCore's criteria for genetic testing for prenatal screening and diagnostic testing will ensure that testing will be available to those members most likely to benefit from a genetic diagnosis. For those not meeting criteria, it ensures alternate diagnostic/management strategies are considered. However, it is possible that some members who would benefit from the testing, but do not meet criteria, will not receive an immediate approval for testing."
-        },
-        {
-          "block_id": "b00491",
-          "type": "paragraph",
-          "page": 46,
-          "text": "Criteria"
         },
         {
           "block_id": "b00492",
@@ -377646,9 +377771,9 @@
     "b00450": "S2.6.2",
     "b00466": "S2.6.3",
     "b00469": "S2.7",
-    "b00475": "S2.7.1",
     "b00484": "S2.8",
-    "b00521": "S2.8.1",
+    "b00491": "S2.8.1",
+    "b00521": "S2.8.2",
     "b00523": "S2.9",
     "b00554": "S2.9.1",
     "b00576": "S2.9.2",
@@ -378128,9 +378253,9 @@
     "Clinical Use Guidelines > Genetic Testing for Known Familial Mutations > Criteria": "S2.6.3",
     "Clinical Use Guidelines > Genetic Testing for Known Familial Mutations > References": "S2.6.2",
     "Clinical Use Guidelines > Genetic Testing for Non-Medical Purposes": "S2.7",
-    "Clinical Use Guidelines > Genetic Testing for Non-Medical Purposes > Criteria:": "S2.7.1",
     "Clinical Use Guidelines > Genetic Testing for Prenatal Screening and Diagnostic Testing": "S2.8",
-    "Clinical Use Guidelines > Genetic Testing for Prenatal Screening and Diagnostic Testing > References": "S2.8.1",
+    "Clinical Use Guidelines > Genetic Testing for Prenatal Screening and Diagnostic Testing > Criteria": "S2.8.1",
+    "Clinical Use Guidelines > Genetic Testing for Prenatal Screening and Diagnostic Testing > References": "S2.8.2",
     "Clinical Use Guidelines > Genetic Testing for Variants of Uncertain Clinical Significance": "S2.9",
     "Clinical Use Guidelines > Genetic Testing for Variants of Uncertain Clinical Significance > Criteria": "S2.9.1",
     "Clinical Use Guidelines > Genetic Testing for Variants of Uncertain Clinical Significance > References": "S2.9.2",

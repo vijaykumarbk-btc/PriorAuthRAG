@@ -1,0 +1,21 @@
+{
+  "pipeline_used": "tiered_bookmark_fallback",
+  "escalated_from_main": false,
+  "page_count": 39,
+  "total_blocks": 611,
+  "total_headings": 24,
+  "total_tables": 6,
+  "heading_source_breakdown": {
+    "bookmark_tier1": 24
+  },
+  "detected_page_offset": 0,
+  "unmatched_entries": [
+    {
+      "title": "CMM-601: Anterior Cervical Discectomy and Fusion Table of Contents",
+      "stated_page": 2,
+      "best_ratio": 0.588,
+      "source": "bookmark_tier1"
+    }
+  ],
+  "warnings": []
+}

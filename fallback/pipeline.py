@@ -257,6 +257,7 @@ def run_tiered_bookmark_pipeline(
 
         # Determine page search window adjusted by offset
         candidate_blocks = []
+        target_page = None
         if stated_page is not None and offset is not None:
             target_page = stated_page + offset
             min_page = target_page - config.page_search_window
@@ -265,18 +266,19 @@ def run_tiered_bookmark_pipeline(
                 (idx, b) for idx, b in enumerate(raw_items)
                 if b.get("page") is not None and min_page <= b["page"] <= max_page
             ]
-
-        # If window yielded no blocks, search document-wide
-        if not candidate_blocks:
+        else:
             candidate_blocks = list(enumerate(raw_items))
 
+        best_dist = 999
         for idx, b in candidate_blocks:
             if idx in matched_block_indices:
                 continue
             ratio = compute_string_similarity(title, b.get("text", ""))
-            if ratio > best_ratio:
+            dist = abs(b.get("page", 0) - target_page) if target_page is not None and b.get("page") is not None else 0
+            if (ratio > best_ratio) or (ratio == best_ratio and dist < best_dist):
                 best_ratio = ratio
                 best_idx = idx
+                best_dist = dist
 
         if best_ratio >= config.min_match_ratio and best_idx is not None:
             return best_idx, best_ratio
@@ -296,19 +298,20 @@ def run_tiered_bookmark_pipeline(
                 raw_items[best_idx]["heading_source"] = src_label
                 raw_items[best_idx]["match_confidence"] = round(best_ratio, 3)
             else:
-                # Per-entry fallback: try secondary tier for THIS entry if available
+                # Per-entry fallback: check if secondary entry corresponds to THIS bookmark title
                 fell_back_success = False
                 if secondary_entries:
                     for s_entry in secondary_entries:
-                        s_idx, s_ratio = match_entry_to_blocks(s_entry, "toc_tier2")
-                        if s_idx is not None:
-                            matched_block_indices.add(s_idx)
-                            raw_items[s_idx]["type"] = "heading"
-                            raw_items[s_idx]["heading_level"] = s_entry.get("level", 1)
-                            raw_items[s_idx]["heading_source"] = "toc_tier2"
-                            raw_items[s_idx]["match_confidence"] = round(s_ratio, 3)
-                            fell_back_success = True
-                            break
+                        if compute_string_similarity(entry["title"], s_entry["title"]) >= config.min_match_ratio:
+                            s_idx, s_ratio = match_entry_to_blocks(s_entry, "toc_tier2")
+                            if s_idx is not None:
+                                matched_block_indices.add(s_idx)
+                                raw_items[s_idx]["type"] = "heading"
+                                raw_items[s_idx]["heading_level"] = entry.get("level", s_entry.get("level", 1))
+                                raw_items[s_idx]["heading_source"] = "toc_tier2"
+                                raw_items[s_idx]["match_confidence"] = round(s_ratio, 3)
+                                fell_back_success = True
+                                break
 
                 if not fell_back_success:
                     logger.warning("Unmatched entry '%s' (stated page: %s, best ratio: %.3f)", entry["title"], entry.get("page"), best_ratio)

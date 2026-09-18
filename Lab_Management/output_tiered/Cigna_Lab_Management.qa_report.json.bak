@@ -1,0 +1,14 @@
+{
+  "pipeline_used": "tiered_bookmark_fallback",
+  "escalated_from_main": false,
+  "page_count": 910,
+  "total_blocks": 12749,
+  "total_headings": 481,
+  "total_tables": 200,
+  "heading_source_breakdown": {
+    "bookmark_tier1": 481
+  },
+  "detected_page_offset": 0,
+  "unmatched_entries": [],
+  "warnings": []
+}
