@@ -289,7 +289,7 @@ def check_master_table_prior_auth(query: str) -> dict:
     return {
         "prior_auth_required": pa_status,
         "matched_cpts": matched_cpts,
-        "primary_description": desc or verified.get("reason", ""),
+        "primary_description": desc,
         "is_procedure": verified.get("is_procedure", True),
         "explanation": verified.get("reason", ""),
         "is_explicit_cpt": False
@@ -340,10 +340,10 @@ def extract_candidate_sections(query: str, top_k_per_doc: int = 4, extra_context
                     t_id = chunk.get("toc_id")
                     sec = chunk.get("section", "")
                     sec_lower = sec.lower()
-                    # Filter out administrative, glossary, and pure code appendix tables
+                    # Filter out administrative, glossary, cover/guideline pages, and pure code appendix tables
                     if not is_admin_query and any(term in sec_lower for term in [
                         "administrative guidelines", "glossary", "billing and reimbursement",
-                        "codes (", "codes"
+                        "codes (", "codes", "guideline page"
                     ]):
                         continue
                     if t_id and t_id not in seen_ids:
@@ -361,10 +361,6 @@ def route_query_to_toc(query: str, prior_auth_status: str = None, cpt_desc: str 
     Stage 2: Route user query against available policy Table of Contents using LLM.
     Returns: (document_key, list_of_toc_ids)
     """
-    # Guardrail: If query refers to a general medical diagnosis or condition, do not route
-    if prior_auth_status and prior_auth_status.strip().lower() == "not applicable":
-        return None, []
-
     doc_keys_str = ", ".join(f'"{k}"' for k in registry.documents.keys())
 
     # 1. Identify if explicit CPT codes match any policy code tables
@@ -400,10 +396,10 @@ def route_query_to_toc(query: str, prior_auth_status: str = None, cpt_desc: str 
         # Fallback to compact TOCs across policies
         toc_context = registry.get_compact_tocs()
 
-    # Filter out pure code and reference lines from TOC context so LLM routes strictly to clinical criteria sections
+    # Filter out pure code, reference, and cover/guideline page lines from TOC context so LLM routes strictly to clinical criteria sections
     filtered_toc = "\n".join(
         line for line in toc_context.splitlines()
-        if not re.search(r"\[s\d+(?:\.\d+)*\]\s*(?:codes|references)", line.lower())
+        if not re.search(r"(?:\[s\d+(?:\.\d+)*\]\s*(?:codes|references)|guideline page)", line.lower())
     )
 
     procedure_str = f"\nProcedure / Clinical Context: {cpt_desc}" if cpt_desc else ""
@@ -611,39 +607,7 @@ def run_rag_pipeline(query: str, top_k: int = 8) -> dict:
     if cpt_desc:
         print(f"  Procedure Description       : {cpt_desc[:80]}...")
 
-    # Early exit ONLY if query refers to medical diagnosis/condition (e.g. common cold, hypertension)
     status_lower = prior_auth_status.strip().lower()
-    if status_lower == "not applicable":
-        notice_text = table_analysis.get("explanation", "")
-        if not notice_text:
-            notice_text = f"The query '{query}' refers to a medical diagnosis or condition rather than a billable procedure, surgery, or diagnostic service code. Commercial prior authorization applies strictly to procedures and test codes."
-
-        print(f"  [Notice] {notice_text}")
-        structured_json = {
-            "Prior auth required": prior_auth_status,
-            "Policy Name": "None Identified",
-            "Referred Sections": [],
-            "Medical necessity indications": [],
-            "Non-Indications": [],
-            "Important criteria & exceptions": [],
-            "Documentation required": [],
-            "Notice": notice_text
-        }
-        os.makedirs(OUTPUT_DIR, exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        slug = "".join(c if c.isalnum() or c == " " else "" for c in query)
-        slug = "_".join(slug.split())[:50]
-        filename = f"{timestamp}_{slug}.json"
-        filepath = os.path.join(OUTPUT_DIR, filename)
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(structured_json, f, indent=2, ensure_ascii=False)
-        print(f"\nReport successfully saved to: {filepath}")
-        print("\n" + "=" * 70)
-        print("FINAL STRUCTURED JSON OUTPUT:")
-        print("=" * 70)
-        print(json.dumps(structured_json, indent=2))
-        print("=" * 70)
-        return structured_json
 
     # ---------------------------------------------------------
     # STAGE 2: TOC-Level Policy & Section Routing
@@ -655,12 +619,13 @@ def run_rag_pipeline(query: str, top_k: int = 8) -> dict:
         cpt_desc=cpt_desc,
         matched_cpts=matched_cpts
     )
-
     if not doc_key or doc_key not in registry.documents:
         print("  [Notice] No matching policy document identified in registry.")
         notice_text = table_analysis.get("explanation", "")
         if not notice_text:
-            if status_lower == "no":
+            if status_lower == "not applicable":
+                notice_text = f"The query '{query}' refers to a medical diagnosis or condition rather than a billable procedure, surgery, or diagnostic service code. Commercial prior authorization applies strictly to procedures and test codes."
+            elif status_lower == "no":
                 notice_text = f"The requested procedure ({', '.join(matched_cpts) if matched_cpts else 'routine service'}) does not require commercial prior authorization under standard coverage terms."
             else:
                 notice_text = f"No registered medical coverage policy was identified that covers the clinical question: '{query}'."
@@ -691,7 +656,7 @@ def run_rag_pipeline(query: str, top_k: int = 8) -> dict:
         print("=" * 70)
         return structured_json
 
-    if prior_auth_status in ["Not Found", "Pending Policy Review"]:
+    if prior_auth_status in ["Not Found", "Pending Policy Review", "Not Applicable"]:
         prior_auth_status = "Yes"
 
     doc_info = registry.get_document(doc_key)
