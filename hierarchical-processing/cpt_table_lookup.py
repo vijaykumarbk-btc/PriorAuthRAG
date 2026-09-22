@@ -74,7 +74,8 @@ class CPTTableLookup:
             "with", "does", "require", "required", "prior", "auth", "authorization", "how",
             "all", "each", "by", "from", "at", "if", "yes", "give", "documents", "document",
             "please", "tell", "about", "show", "can", "you", "would", "like", "know",
-            "under", "status", "policy", "test", "tests", "testing", "guideline", "guidelines"
+            "under", "status", "policy", "test", "tests", "testing", "guideline", "guidelines",
+            "common", "simple", "routine", "general", "standard", "acute", "chronic"
         }
         raw_words = re.findall(r"[a-z0-9]+", query.lower())
         # Filter stop words, short words, and 1-4 digit numbers (e.g. policy/chapter IDs) while preserving 5-digit CPT codes
@@ -123,12 +124,17 @@ class CPTTableLookup:
 
     def analyze_query_prior_auth(self, query: str) -> dict:
         """Analyze query against table.json to get prior auth status and candidate CPTs."""
+        explicit_codes = re.findall(r"\b[0-9]{4}[0-9A-Za-z]\b|\b[0-9]{5}\b", query)
         matches = self.search_by_query(query)
+        is_explicit = bool(explicit_codes)
+
         if not matches:
             return {
-                "prior_auth_required": "No",
-                "matched_cpts": [],
-                "primary_description": ""
+                "prior_auth_required": "Not Found",
+                "matched_cpts": explicit_codes if is_explicit else [],
+                "primary_description": "",
+                "is_explicit_cpt": is_explicit,
+                "matched_rows": []
             }
 
         cpts = []
@@ -157,6 +163,7 @@ class CPTTableLookup:
             "prior_auth_required": pa,
             "matched_cpts": list(set(cpts)),
             "primary_description": first_desc,
+            "is_explicit_cpt": is_explicit,
             "matched_rows": matches
         }
 

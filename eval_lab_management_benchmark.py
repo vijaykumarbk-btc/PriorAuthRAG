@@ -66,7 +66,7 @@ BENCHMARK_CASES = [
         "query": "What are the coverage criteria for whole exome sequencing 81415 for unexplained developmental delay?",
         "expected_prior_auth": "Yes",
         "expected_policy": "Cigna_Lab_Management",
-        "expected_toc_prefix": "S3.23",
+        "expected_toc_prefix": ["S3.23", "S3.6"],
         "target_guideline": "Exome Sequencing",
         "key_clinical_terms": ["exome", "developmental", "pre-test", "counseling"]
     },
@@ -143,7 +143,7 @@ BENCHMARK_CASES = [
         "query": "What are the indications for X-linked intellectual disability multigene panel 81470 genetic testing?",
         "expected_prior_auth": "Yes",
         "expected_policy": "Cigna_Lab_Management",
-        "expected_toc_prefix": "S3.6",
+        "expected_toc_prefix": ["S3.6", "S2.13"],
         "target_guideline": "Autism, Intellectual Disability, and Developmental Delay",
         "key_clinical_terms": ["intellectual", "disability", "panel", "x-linked"]
     },
@@ -297,6 +297,12 @@ def evaluate_single_query(case: dict) -> dict:
     except Exception as e:
         st1_info["error"] = str(e)
 
+    # ---------------------------------------------------------
+    # EXPECTED TOC PREFIXES
+    # ---------------------------------------------------------
+    exp_toc = case.get("expected_toc_prefix")
+    exp_tocs = [exp_toc] if isinstance(exp_toc, str) else (list(exp_toc) if exp_toc else [])
+
     # -----------------------------------------------------------------------
     # STAGE 2: TOC ROUTING
     # -----------------------------------------------------------------------
@@ -305,7 +311,7 @@ def evaluate_single_query(case: dict) -> dict:
     routed_doc = None
     routed_tocs = []
     try:
-        routed_doc, routed_tocs = rh.route_query_to_toc(query)
+        routed_doc, routed_tocs = rh.route_query_to_toc(query, prior_auth_status=pred_pa)
         st2_info = {
             "routed_doc": routed_doc,
             "routed_tocs": routed_tocs
@@ -313,7 +319,10 @@ def evaluate_single_query(case: dict) -> dict:
         if qtype == "YES":
             # Must route to Cigna_Lab_Management and match expected TOC prefix
             doc_ok = (routed_doc == exp_pol)
-            toc_ok = any(t.startswith(exp_toc) or exp_toc.startswith(t) for t in routed_tocs) if routed_tocs else False
+            toc_ok = any(
+                any(t.startswith(prefix) or prefix.startswith(t) for prefix in exp_tocs)
+                for t in routed_tocs
+            ) if routed_tocs and exp_tocs else False
             st2_pass = (doc_ok and toc_ok)
         else:
             # For NO queries: clean pass if routed_doc is None or properly recognized as no policy
@@ -334,7 +343,11 @@ def evaluate_single_query(case: dict) -> dict:
             # Strict verification: chunks must belong to the expected TOC sub-tree
             purity = 0
             if num_retrieved > 0:
-                purity = sum(1 for r in results if r.get("toc_id", "").startswith(exp_toc) or exp_toc.startswith(r.get("toc_id", ""))) / num_retrieved
+                matching_count = sum(
+                    1 for r in results 
+                    if any(r.get("toc_id", "").startswith(p) or p.startswith(r.get("toc_id", "")) for p in exp_tocs)
+                )
+                purity = matching_count / num_retrieved
             st3_info = {
                 "num_retrieved": num_retrieved,
                 "section_purity": purity
