@@ -3,3 +3,5 @@ __pycache__/
 venv
 data/results_new
 data/result-old
+.graphifyignore
+graphify-out/
