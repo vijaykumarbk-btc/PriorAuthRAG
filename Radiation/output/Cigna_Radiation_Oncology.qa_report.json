@@ -1,0 +1,27 @@
+{
+  "pipeline_used": "tiered_bookmark_fallback",
+  "escalated_from_main": false,
+  "page_count": 316,
+  "total_blocks": 4472,
+  "total_headings": 143,
+  "total_tables": 8,
+  "heading_source_breakdown": {
+    "bookmark_tier1": 143
+  },
+  "detected_page_offset": 0,
+  "unmatched_entries": [
+    {
+      "title": "Radiation Oncology Guidelines Table of Contents",
+      "stated_page": 3,
+      "best_ratio": 0.554,
+      "source": "bookmark_tier1"
+    },
+    {
+      "title": "Xofigo® (Radium-223)",
+      "stated_page": 301,
+      "best_ratio": 0.357,
+      "source": "bookmark_tier1"
+    }
+  ],
+  "warnings": []
+}

@@ -31,6 +31,14 @@
       "metadata_file": "../data/policies/Cigna_Knee/embeddings/Cigna_Knee_metadata.json",
       "embeddings_file": "../data/policies/Cigna_Knee/embeddings/Cigna_Knee_embeddings.npy",
       "bm25_file": "../data/policies/Cigna_Knee/bm25/Cigna_Knee_bm25.pkl"
+    },
+    {
+      "doc_key": "Cigna_Radiation_Oncology",
+      "display_name": "Cigna Radiation Oncology",
+      "toc_file": "../Radiation/toc/Cigna_Radiation_Oncology_toc_output.json",
+      "metadata_file": "../Radiation/embeddings/Cigna_Radiation_Oncology_metadata.json",
+      "embeddings_file": "../Radiation/embeddings/Cigna_Radiation_Oncology_embeddings.npy",
+      "bm25_file": "../Radiation/bm25/Cigna_Radiation_Oncology_bm25.pkl"
     }
   ]
 }
