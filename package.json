@@ -1,4 +1,11 @@
 {
+  "name": "prior-auth-rag",
+  "version": "1.0.0",
+  "scripts": {
+    "update-docs": "node .agents/plugins/hook-auto-docs/scripts/update-structure-docs.js && node .agents/plugins/hook-auto-docs/scripts/generate-git-history.js",
+    "update-history": "node .agents/plugins/hook-auto-docs/scripts/generate-git-history.js",
+    "update-structure": "node .agents/plugins/hook-auto-docs/scripts/update-structure-docs.js"
+  },
   "dependencies": {
     "@llamaindex/liteparse": "^2.13.1",
     "@llamaindex/liteparse-wasm": "^2.13.1"

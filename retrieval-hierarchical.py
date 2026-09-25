@@ -81,8 +81,9 @@ def call_llm(prompt: str, json_mode: bool = True) -> str:
                             return content
                     except Exception as m_err:
                         err_str = str(m_err).lower()
-                        # Rate limit → try next model
+                        # Rate limit → sleep briefly and try next model
                         if "429" in str(m_err) or "rate_limit" in err_str:
+                            time.sleep(1.5)
                             break
                         # Groq's JSON validator rejected the output → retry same model without json_mode
                         if "json_validate_failed" in err_str or "failed to validate json" in err_str:
@@ -100,7 +101,7 @@ def call_llm(prompt: str, json_mode: bool = True) -> str:
     response = ollama_client.chat.completions.create(
         model=OLLAMA_MODEL,
         messages=[
-            {"role": "system", "content": "You are a clinical decision support assistant that outputs strictly valid JSON objects without preamble."},
+            {"role": "system", "content": "You are a clinical decision support assistant that outputs strictly valid JSON objects without preamble. Do not output thoughts or reasoning."},
             {"role": "user", "content": prompt}
         ],
         temperature=0.1,
@@ -309,163 +310,247 @@ META_QUERY_STOPWORDS = {
     "procedure", "procedures", "test", "testing"
 }
 
-def extract_candidate_sections(query: str, top_k_per_doc: int = 4, extra_context: str = "") -> dict:
-    """Pre-rank candidate sections across registered policies using lexical BM25 matching."""
+def get_ranked_candidate_sections(query: str, matched_cpts: list[str] = None, cpt_desc: str = None, max_candidates: int = 6) -> list[dict]:
+    """
+    Dynamically rank candidate policy sections across all registered documents using:
+      1. Direct CPT code mentions in chunk text/tables (highest fidelity)
+      2. BM25 keyword matching across chunk metadata
+      3. Title token overlap with document flat_toc nodes
+    Zero hardcoding: uses document-provided metadata and TOC files.
+    """
     import pickle
-    search_text = f"{query} {extra_context}" if extra_context else query
+    search_text = f"{query} {cpt_desc}" if cpt_desc else query
     raw_tokens = re.findall(r"[a-z0-9]+", search_text.lower())
     clean_tokens = [t for t in raw_tokens if t not in META_QUERY_STOPWORDS]
     tokens = clean_tokens if clean_tokens else raw_tokens
-    if not tokens:
-        return {}
-    candidates = {}
+
+    explicit_codes = matched_cpts if matched_cpts else re.findall(r"\b[0-9]{4}[0-9A-Za-z]\b|\b[0-9]{5}\b", query)
     is_admin_query = any(w in query.lower() for w in ["administrative", "billing", "reimbursement", "appeal", "glossary"])
+
+    candidates_by_key = {}
+
     for k, d in registry.documents.items():
+        doc_name = d.get("display_name", k)
         bm_file = d.get("bm25_file")
         meta_file = d.get("metadata_file")
+        toc_file = d.get("toc_file")
+
+        flat_nodes = {}
+        canonical_parent = {}
+        if toc_file and os.path.exists(toc_file):
+            try:
+                with open(toc_file, "r", encoding="utf-8") as f:
+                    t_data = json.load(f)
+                for n in t_data.get("flat_toc", []):
+                    tid = n.get("toc_id")
+                    if tid:
+                        flat_nodes[tid] = n.get("title", "")
+                # Canonical parent mapping: collapse child nodes that duplicate an ancestor title back to highest ancestor
+                for tid, title in flat_nodes.items():
+                    parts = tid.split(".")
+                    for i in range(1, len(parts)):
+                        anc = ".".join(parts[:i])
+                        if anc in flat_nodes and flat_nodes[anc].strip().lower() == title.strip().lower():
+                            canonical_parent[tid] = anc
+                            break
+            except Exception:
+                pass
+
         if not bm_file or not meta_file or not os.path.exists(bm_file) or not os.path.exists(meta_file):
             continue
+
         try:
             with open(bm_file, "rb") as f:
                 b = pickle.load(f)
             with open(meta_file, "r", encoding="utf-8") as f:
                 m = json.load(f)
-            scores = b["bm25"].get_scores(tokens)
-            top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:top_k_per_doc]
-            doc_cands = []
-            seen_ids = set()
+
+            scores = b["bm25"].get_scores(tokens) if tokens else [0] * len(m)
+
+            # 1. Direct CPT Code hits
+            for c_code in explicit_codes:
+                for idx, chunk in enumerate(m):
+                    chunk_text = chunk.get("text", "")
+                    if c_code in chunk_text:
+                        t_id = chunk.get("toc_id")
+                        if t_id:
+                            parts = t_id.split(".")
+                            primary_t_id = ".".join(parts[:2]) if len(parts) >= 2 else t_id
+                            primary_t_id = canonical_parent.get(primary_t_id, primary_t_id)
+                            sec = chunk.get("section", "")
+                            sec_lower = sec.lower()
+                            if not is_admin_query and any(term in sec_lower for term in [
+                                "administrative guidelines", "glossary", "guideline page"
+                            ]):
+                                continue
+                            title = flat_nodes.get(primary_t_id, flat_nodes.get(t_id, sec.split(">")[-1].strip()))
+                            c_key = (k, primary_t_id)
+                            if c_key not in candidates_by_key:
+                                candidates_by_key[c_key] = {
+                                    "doc_key": k,
+                                    "doc_name": doc_name,
+                                    "toc_id": primary_t_id,
+                                    "title": title,
+                                    "score": 25.0
+                                }
+                            else:
+                                candidates_by_key[c_key]["score"] += 10.0
+
+            # 2. BM25 top chunks
+            top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:15]
             for idx in top_indices:
-                if scores[idx] > 2.0:
+                sc = float(scores[idx])
+                if sc > 2.0:
                     chunk = m[idx]
                     t_id = chunk.get("toc_id")
+                    if not t_id:
+                        continue
                     sec = chunk.get("section", "")
                     sec_lower = sec.lower()
-                    # Filter out administrative, glossary, cover/guideline pages, and pure code appendix tables
                     if not is_admin_query and any(term in sec_lower for term in [
                         "administrative guidelines", "glossary", "billing and reimbursement",
-                        "codes (", "codes", "guideline page"
+                        "codes (", "codes", "references", "guideline page"
                     ]):
                         continue
-                    if t_id and t_id not in seen_ids:
-                        seen_ids.add(t_id)
-                        doc_cands.append((t_id, sec, float(scores[idx])))
-            if doc_cands:
-                candidates[k] = doc_cands
+                    parts = t_id.split(".")
+                    primary_t_id = ".".join(parts[:2]) if len(parts) >= 2 else t_id
+                    primary_t_id = canonical_parent.get(primary_t_id, primary_t_id)
+                    title = flat_nodes.get(primary_t_id, flat_nodes.get(t_id, sec.split(">")[-1].strip()))
+                    c_key = (k, primary_t_id)
+                    if c_key not in candidates_by_key:
+                        candidates_by_key[c_key] = {
+                            "doc_key": k,
+                            "doc_name": doc_name,
+                            "toc_id": primary_t_id,
+                            "title": title,
+                            "score": sc
+                        }
+                    else:
+                        candidates_by_key[c_key]["score"] += sc * 0.5
+
+            # 3. Direct Title lexical matching against flat_nodes
+            for tid, title in flat_nodes.items():
+                title_lower = title.lower()
+                if not is_admin_query and any(term in title_lower for term in [
+                    "administrative guidelines", "glossary", "billing and reimbursement",
+                    "codes (", "references"
+                ]):
+                    continue
+                t_tokens = set(re.findall(r"[a-z0-9]+", title_lower)) - META_QUERY_STOPWORDS
+                overlap = set(tokens) & t_tokens
+                if overlap:
+                    overlap_ratio = len(overlap) / (len(t_tokens) + 1e-5)
+                    boost = len(overlap) * 3.0 + (5.0 if overlap_ratio > 0.4 else 0)
+                    parts = tid.split(".")
+                    primary_tid = ".".join(parts[:2]) if len(parts) >= 2 else tid
+                    primary_tid = canonical_parent.get(primary_tid, primary_tid)
+                    c_key = (k, primary_tid)
+                    if c_key not in candidates_by_key:
+                        candidates_by_key[c_key] = {
+                            "doc_key": k,
+                            "doc_name": doc_name,
+                            "toc_id": primary_tid,
+                            "title": flat_nodes.get(primary_tid, title),
+                            "score": boost
+                        }
+                    else:
+                        candidates_by_key[c_key]["score"] += boost
+
         except Exception:
             pass
-    return candidates
+
+    ranked = sorted(candidates_by_key.values(), key=lambda x: x["score"], reverse=True)
+    final_cands = []
+    for i, c in enumerate(ranked[:max_candidates], 1):
+        c["candidate_index"] = i
+        final_cands.append(c)
+
+    return final_cands
 
 
 def route_query_to_toc(query: str, prior_auth_status: str = None, cpt_desc: str = None, matched_cpts: list[str] = None) -> tuple[str, list[str]]:
     """
-    Stage 2: Route user query against available policy Table of Contents using LLM.
+    Stage 2: Route user query against available policy Table of Contents using Constrained Candidate-Index Selection.
     Returns: (document_key, list_of_toc_ids)
     """
-    doc_keys_str = ", ".join(f'"{k}"' for k in registry.documents.keys())
+    if prior_auth_status:
+        pa_lower = prior_auth_status.strip().lower()
+        if pa_lower in ["no", "none", "not required", "not applicable", "false", "0"]:
+            print(f"  ⚡ Bypassing Stage 2 TOC routing (Master Table indicates Prior Auth = '{prior_auth_status}')")
+            return None, []
 
-    # 1. Identify if explicit CPT codes match any policy code tables
     explicit_codes = matched_cpts if matched_cpts else re.findall(r"\b[0-9]{4}[0-9A-Za-z]\b|\b[0-9]{5}\b", query)
-    policy_hits = []
-    for c in explicit_codes:
-        for p_key, t_id, sec in find_policy_for_cpt_code(c):
-            if p_key not in policy_hits:
-                policy_hits.append(p_key)
 
-    # 2. Extract BM25 candidate sections across documents (excluding pure code index tables)
-    candidates = extract_candidate_sections(query, extra_context=cpt_desc or "")
+    candidates = get_ranked_candidate_sections(query, matched_cpts=explicit_codes, cpt_desc=cpt_desc, max_candidates=6)
+    if not candidates:
+        return None, []
 
-    # 3. Build TOC context:
-    # If explicit CPT code belongs to specific policy/policies, present their full compact TOCs
-    # so LLM has visibility into clinical sections (e.g. S9.1, S6.1) rather than being trapped in code lists.
-    # Otherwise, provide BM25 candidate sections, or fallback to compact TOCs across policies.
-    if policy_hits:
-        cand_lines = []
-        for d_key in policy_hits:
-            cand_lines.append(registry.get_compact_tocs(d_key))
-        toc_context = "\n\n".join(cand_lines)
-    elif candidates:
-        cand_lines = []
-        for d_key, c_list in candidates.items():
-            doc_name = registry.documents.get(d_key, {}).get("display_name", d_key)
-            cand_lines.append(f"Policy: {d_key} ({doc_name})")
-            for t_id, sec, sc in c_list:
-                cand_lines.append(f"  - [{t_id}] {sec}")
-            cand_lines.append("")
-        toc_context = "\n".join(cand_lines)
-    else:
-        # Fallback to compact TOCs across policies
-        toc_context = registry.get_compact_tocs()
-
-    # Filter out pure code, reference, and cover/guideline page lines from TOC context so LLM routes strictly to clinical criteria sections
-    filtered_toc = "\n".join(
-        line for line in toc_context.splitlines()
-        if not re.search(r"(?:\[s\d+(?:\.\d+)*\]\s*(?:codes|references)|guideline page)", line.lower())
-    )
+    cand_lines = []
+    for c in candidates:
+        cand_lines.append(f"[{c['candidate_index']}] Policy: {c['doc_key']} | Section: [{c['toc_id']}] {c['title']}")
+    candidates_text = "\n".join(cand_lines)
 
     procedure_str = f"\nProcedure / Clinical Context: {cpt_desc}" if cpt_desc else ""
 
-    prompt = f"""Given the following clinical coverage policies Table of Contents and a clinical question, identify:
-1. The most relevant document key (strictly one of: {doc_keys_str}). If NONE of the policies cover or are relevant to the question, set "document_key": null and "toc_ids": [].
-2. The specific clinical section ID(s) (e.g. ["S9.1", "S6.1"] or ["S3.7", "S3.7.1"] or ["S22", "S27"]) containing the medical necessity criteria, clinical indications, and documentation required. Do NOT select pure Definitions, Glossary, References, or Code/Billing index tables.
-3. If the question asks about a routine procedure or standard lab test (such as complete blood count, metabolic panel, lipid panel, thyroid panel, urinalysis, or vitamin D) that does NOT have an active medical necessity criteria guideline in the provided TOC list, you MUST return: {{"document_key": null, "toc_ids": []}}.
+    prompt = f"""You are an expert clinical prior authorization policy router.
+Given the clinical query and candidate policy sections below:
+1. Select the single candidate number (1, 2, 3...) whose section contains the medical necessity criteria for this procedure or condition.
+2. If NONE of the candidates cover this procedure, or if the question is about a routine non-precertified test (e.g. routine CBC, CMP, Lipid panel, HbA1c, TSH, Urinalysis, Vitamin D, routine office visits) that does not require prior authorization, return "selected_candidate": null.
 
-### Candidate Policies & Sections:
-{filtered_toc}
+### Candidate Policy Sections:
+{candidates_text}
 
 ### Question:
 {query}{procedure_str}
 
 ### Output Instructions:
-Output strictly a JSON object with keys "document_key" and "toc_ids":
-{{"document_key": "...", "toc_ids": ["S..."]}}
+Output strictly a JSON object:
+{{"selected_candidate": <number 1-{len(candidates)} or null>, "reason": "<brief rationale>"}}
 """
 
     try:
         raw_resp = call_llm(prompt, json_mode=True)
         routing_data = extract_clean_json(raw_resp)
+        sel = routing_data.get("selected_candidate")
+
+        if sel is not None:
+            try:
+                sel_idx = int(sel)
+                if 1 <= sel_idx <= len(candidates):
+                    chosen = candidates[sel_idx - 1]
+                    return chosen["doc_key"], [chosen["toc_id"]]
+            except (ValueError, TypeError):
+                pass
+
+        # Fallback: check if the LLM returned document_key or toc_ids directly
         doc_key = routing_data.get("document_key")
         toc_ids = routing_data.get("toc_ids", [])
-
-        # 1. Normalize candidate section IDs
-        candidate_ids = []
-        if doc_key and re.match(r"^S\d+(?:\.\d+)*$", str(doc_key).strip()):
-            candidate_ids.append(str(doc_key).strip())
-            doc_key = None
-        for x in toc_ids:
-            s = str(x).strip()
-            if re.match(r"^S\d+(?:\.\d+)*$", s):
-                candidate_ids.append(s)
-
-        # 2. Resolve document key flexibly
-        resolved_key = None
         if doc_key and doc_key in registry.documents:
-            resolved_key = doc_key
-        elif doc_key:
-            for k, doc in registry.documents.items():
-                if str(doc_key).lower() in k.lower() or str(doc_key).lower() in doc["display_name"].lower():
-                    resolved_key = k
-                    break
+            valid_tocs = set()
+            tf = registry.documents[doc_key].get("toc_file")
+            if tf and os.path.exists(tf):
+                try:
+                    with open(tf, "r", encoding="utf-8") as f:
+                        valid_tocs = set(n.get("toc_id") for n in json.load(f).get("flat_toc", []))
+                except Exception:
+                    pass
 
-        # 3. Infer document from candidate section IDs if doc_key was omitted or was a section ID
-        if not resolved_key and candidate_ids:
-            first_id = candidate_ids[0]
-            for k, doc in registry.documents.items():
-                tf = doc.get("toc_file")
-                if tf and os.path.exists(tf):
-                    try:
-                        with open(tf, "r", encoding="utf-8") as f:
-                            d = json.load(f)
-                        nodes = set(n.get("toc_id") for n in d.get("flat_toc", []))
-                        if first_id in nodes or any(n and n.startswith(first_id + ".") for n in nodes):
-                            resolved_key = k
-                            break
-                    except Exception:
-                        pass
+            validated_ids = []
+            for tid in toc_ids:
+                s = str(tid).strip()
+                if s in valid_tocs:
+                    validated_ids.append(s)
+                elif candidates and candidates[0]["doc_key"] == doc_key:
+                    validated_ids.append(candidates[0]["toc_id"])
+            if validated_ids:
+                return doc_key, validated_ids
+            elif candidates and candidates[0]["doc_key"] == doc_key:
+                return doc_key, [candidates[0]["toc_id"]]
 
-        if resolved_key:
-            return resolved_key, candidate_ids
     except Exception as e:
         print(f"[Notice] TOC routing exception ({e})")
+        if candidates and candidates[0]["score"] >= 15.0:
+            return candidates[0]["doc_key"], [candidates[0]["toc_id"]]
 
     return None, []
 
@@ -478,10 +563,28 @@ def retrieve_scoped_chunks(query: str, doc_key: str, candidate_toc_ids: list[str
     """
     Stage 3: Run hybrid search strictly scoped to the candidate toc_ids of the target document.
     """
+    expanded_tocs = list(candidate_toc_ids)
+    doc_info = registry.get_document(doc_key)
+    if doc_info and doc_info.get("toc_file") and os.path.exists(doc_info["toc_file"]):
+        try:
+            with open(doc_info["toc_file"], "r", encoding="utf-8") as f:
+                t_data = json.load(f)
+            flat = {n["toc_id"]: n.get("title", "").strip().lower() for n in t_data.get("flat_toc", []) if n.get("toc_id")}
+            for tid in candidate_toc_ids:
+                parts = tid.split(".")
+                for i in range(1, len(parts)):
+                    anc = ".".join(parts[:i])
+                    if anc in flat and flat[anc] == flat.get(tid, ""):
+                        if anc not in expanded_tocs:
+                            expanded_tocs.append(anc)
+                        break
+        except Exception:
+            pass
+
     results = scoped_search(
         query=query,
         policy_hint=doc_key,
-        candidate_toc_ids=candidate_toc_ids,
+        candidate_toc_ids=expanded_tocs,
         top_k=top_k,
         alpha=0.5,
         mode="hybrid"
@@ -586,7 +689,108 @@ You must format your answer strictly as a valid JSON object matching this schema
 5. "Source": Clean breadcrumbs only. Do not duplicate titles (e.g., write "Section Title > Subsection", NEVER "Section Title... > Section Title...").
 6. Ground all answers strictly in the provided Medical Policy Context. Do NOT invent criteria or use generic placeholder text.
 7. If "Documentation required" or "Non-Indications" are not specified or required in the context, return an empty array [] for that field.
+8. CRITICAL: If the requested test or procedure is deemed Experimental, Investigational, Unproven, or NOT medically necessary with zero approved indications (e.g. DermTech melanoma test), you MUST still output "Prior auth required": "{prior_auth_status}" and "Medical necessity indications": [], detailing all investigational exclusions, non-covered reasons, and lack of evidence under "Non-Indications".
 """
+
+
+def normalize_clinical_json(raw_dict: dict, prior_auth_status: str, policy_name: str) -> dict:
+    """
+    Universally normalize clinical synthesis JSON to guarantee all 7 canonical keys exist,
+    regardless of casing (e.g. 'non-indications' vs 'Non-Indications') or whether the test is
+    covered vs investigational/unproven.
+    """
+    if not isinstance(raw_dict, dict):
+        raw_dict = {}
+
+    key_alias_map = {
+        "prior auth required": "Prior auth required",
+        "prior_auth_required": "Prior auth required",
+        "prior authorization required": "Prior auth required",
+        "policy name": "Policy Name",
+        "policy_name": "Policy Name",
+        "referred sections": "Referred Sections",
+        "referred_sections": "Referred Sections",
+        "medical necessity indications": "Medical necessity indications",
+        "medical_necessity_indications": "Medical necessity indications",
+        "indications": "Medical necessity indications",
+        "non-indications": "Non-Indications",
+        "non_indications": "Non-Indications",
+        "non indications": "Non-Indications",
+        "important criteria & exceptions": "Important criteria & exceptions",
+        "important_criteria_and_exceptions": "Important criteria & exceptions",
+        "important_criteria_&_exceptions": "Important criteria & exceptions",
+        "exceptions": "Important criteria & exceptions",
+        "documentation required": "Documentation required",
+        "documentation_required": "Documentation required",
+    }
+
+    normalized = {}
+    for k, v in raw_dict.items():
+        canon_key = key_alias_map.get(str(k).strip().lower(), k)
+        normalized[canon_key] = v
+
+    normalized["Prior auth required"] = prior_auth_status
+    if not normalized.get("Policy Name"):
+        normalized["Policy Name"] = policy_name
+
+    # Handle Medical necessity indications
+    if "Medical necessity indications" not in normalized or not normalized["Medical necessity indications"]:
+        if "criteria" in normalized and isinstance(normalized["criteria"], list):
+            indications = []
+            for c in normalized["criteria"]:
+                if isinstance(c, dict):
+                    desc = c.get("description", "")
+                    docs = c.get("documentation_required", [])
+                    indications.append({
+                        "Guideline Category": desc[:60] if desc else "Clinical Criteria",
+                        "Required findings": [desc] + (docs if isinstance(docs, list) else []),
+                        "Source": policy_name
+                    })
+            normalized["Medical necessity indications"] = indications
+        elif not isinstance(normalized.get("Medical necessity indications"), list):
+            normalized["Medical necessity indications"] = []
+
+    if "Referred Sections" not in normalized or not isinstance(normalized["Referred Sections"], list):
+        normalized["Referred Sections"] = [policy_name]
+
+    if "Important criteria & exceptions" not in normalized or not isinstance(normalized["Important criteria & exceptions"], list):
+        normalized["Important criteria & exceptions"] = []
+
+    # Clean breadcrumbs
+    for ind in normalized.get("Medical necessity indications", []):
+        if "Source" in ind and isinstance(ind["Source"], str):
+            ind["Source"] = clean_section_breadcrumb(ind["Source"])
+
+    cleaned_refs = []
+    for ref in normalized.get("Referred Sections", []):
+        c = clean_section_breadcrumb(str(ref))
+        if c and c not in cleaned_refs:
+            cleaned_refs.append(c)
+    normalized["Referred Sections"] = cleaned_refs
+
+    PLACEHOLDER_SUBSTRINGS = [
+        "conditions or scenarios considered not medically necessary",
+        "specific clinical documentation, imaging reports",
+        "clinical scenario where",
+        "condition category name"
+    ]
+    if "Non-Indications" in normalized and isinstance(normalized["Non-Indications"], list):
+        normalized["Non-Indications"] = [
+            item for item in normalized["Non-Indications"]
+            if not any(sub in str(item).lower() for sub in PLACEHOLDER_SUBSTRINGS)
+        ]
+    else:
+        normalized["Non-Indications"] = []
+
+    if "Documentation required" in normalized and isinstance(normalized["Documentation required"], list):
+        normalized["Documentation required"] = [
+            item for item in normalized["Documentation required"]
+            if not any(sub in str(item).lower() for sub in PLACEHOLDER_SUBSTRINGS)
+        ]
+    else:
+        normalized["Documentation required"] = []
+
+    return normalized
 
 
 def run_rag_pipeline(query: str, top_k: int = 8) -> dict:
@@ -674,6 +878,24 @@ def run_rag_pipeline(query: str, top_k: int = 8) -> dict:
         candidate_toc_ids=routed_toc_ids,
         top_k=top_k
     )
+
+    if not results:
+        # Self-healing: try candidate #2 from ranked candidates if available
+        alt_cands = get_ranked_candidate_sections(query, matched_cpts=matched_cpts, cpt_desc=cpt_desc, max_candidates=4)
+        for ac in alt_cands:
+            if ac["doc_key"] == doc_key and ac["toc_id"] not in routed_toc_ids:
+                print(f"  [Self-Healing] Initial section {routed_toc_ids} returned 0 chunks. Retrying with candidate: [{ac['toc_id']}] {ac['title']}...")
+                alt_results = retrieve_scoped_chunks(
+                    query=query,
+                    doc_key=doc_key,
+                    candidate_toc_ids=[ac["toc_id"]],
+                    top_k=top_k
+                )
+                if alt_results:
+                    results = alt_results
+                    routed_toc_ids = [ac["toc_id"]]
+                    break
+
     print(f"  Retrieved {len(results)} scoped chunks (with condition completion):")
     for i, r in enumerate(results[:5], 1):
         print(f"    {i}. [{r.get('toc_id', 'N/A')}] {r.get('section', '')[:65]}")
@@ -719,71 +941,8 @@ def run_rag_pipeline(query: str, top_k: int = 8) -> dict:
     )
 
     raw_response = call_llm(prompt, json_mode=True)
-    structured_json = extract_clean_json(raw_response)
-
-    # Ensure required fields conform
-    structured_json["Prior auth required"] = prior_auth_status
-    if "Policy Name" not in structured_json or not structured_json["Policy Name"]:
-        structured_json["Policy Name"] = policy_name
-
-    # Schema key normalization
-    if "Medical necessity indications" not in structured_json:
-        if "criteria" in structured_json and isinstance(structured_json["criteria"], list):
-            indications = []
-            for c in structured_json["criteria"]:
-                if isinstance(c, dict):
-                    desc = c.get("description", "")
-                    docs = c.get("documentation_required", [])
-                    indications.append({
-                        "Guideline Category": desc[:60] if desc else "Clinical Criteria",
-                        "Required findings": [desc] + (docs if isinstance(docs, list) else []),
-                        "Source": policy_name
-                    })
-            structured_json["Medical necessity indications"] = indications
-        else:
-            structured_json["Medical necessity indications"] = []
-
-    if "Referred Sections" not in structured_json or not structured_json["Referred Sections"]:
-        structured_json["Referred Sections"] = [policy_name]
-
-    if "Important criteria & exceptions" not in structured_json:
-        structured_json["Important criteria & exceptions"] = []
-
-    # Post-process: clean breadcrumbs in Source and Referred Sections
-    for ind in structured_json.get("Medical necessity indications", []):
-        if "Source" in ind and isinstance(ind["Source"], str):
-            ind["Source"] = clean_section_breadcrumb(ind["Source"])
-
-    if "Referred Sections" in structured_json and isinstance(structured_json["Referred Sections"], list):
-        cleaned_refs = []
-        for ref in structured_json["Referred Sections"]:
-            c = clean_section_breadcrumb(ref)
-            if c and c not in cleaned_refs:
-                cleaned_refs.append(c)
-        structured_json["Referred Sections"] = cleaned_refs
-
-    # Strip any echoed placeholder text
-    PLACEHOLDER_SUBSTRINGS = [
-        "conditions or scenarios considered not medically necessary",
-        "specific clinical documentation, imaging reports",
-        "clinical scenario where",
-        "condition category name"
-    ]
-    if "Non-Indications" in structured_json and isinstance(structured_json["Non-Indications"], list):
-        structured_json["Non-Indications"] = [
-            item for item in structured_json["Non-Indications"]
-            if not any(sub in str(item).lower() for sub in PLACEHOLDER_SUBSTRINGS)
-        ]
-    elif "Non-Indications" not in structured_json:
-        structured_json["Non-Indications"] = []
-
-    if "Documentation required" in structured_json and isinstance(structured_json["Documentation required"], list):
-        structured_json["Documentation required"] = [
-            item for item in structured_json["Documentation required"]
-            if not any(sub in str(item).lower() for sub in PLACEHOLDER_SUBSTRINGS)
-        ]
-    elif "Documentation required" not in structured_json:
-        structured_json["Documentation required"] = []
+    raw_json = extract_clean_json(raw_response)
+    structured_json = normalize_clinical_json(raw_json, prior_auth_status, policy_name)
 
 
     # Save output to data/results_new

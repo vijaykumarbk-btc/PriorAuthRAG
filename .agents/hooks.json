@@ -1,0 +1,23 @@
+{
+  "hook-auto-docs": {
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node plugins/hook-auto-docs/scripts/track-structure-changes.js",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node plugins/hook-auto-docs/scripts/update-structure-docs.js",
+        "timeout": 15
+      }
+    ]
+  }
+}

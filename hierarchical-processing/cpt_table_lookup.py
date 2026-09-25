@@ -164,6 +164,7 @@ class CPTTableLookup:
             "matched_cpts": list(set(cpts)),
             "primary_description": first_desc,
             "is_explicit_cpt": is_explicit,
+            "is_add_on": (pa == "Add On"),
             "matched_rows": matches
         }
 

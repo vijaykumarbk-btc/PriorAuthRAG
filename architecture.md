@@ -57,50 +57,61 @@ flowchart TD
   2. Expands medical abbreviations and surgical concepts (`acdf` $\rightarrow$ `22551`, `adjacent segment` $\rightarrow$ `22551, 22612`, `lumbar fusion` $\rightarrow$ `22612`, etc.).
   3. Scans master table for matching CPT codes and procedure descriptions.
   4. Returns:
-     - `"Prior auth required"`: `"Yes"`, `"No"`, or `"Add On"`
+     - `"prior_auth_required"`: `"Yes"`, `"No"`, `"Add On"`, or `"Not Found"`
+     - `"is_add_on"`: Boolean flag (`True` for surgical add-on procedures like `22552`)
      - `"matched_cpts"`: List of associated CPT codes
      - `"primary_description"`: Matched procedure category
+  5. **Deterministic Bypass**: If the procedure is explicitly confirmed as not requiring prior auth (`"No"` or `"Not Found"` for routine outpatient screening tests like CBC, CMP, Lipid panel), the pipeline deterministically short-circuits Stage 2 and returns clean determination immediately with zero hallucinations.
 
-### Stage 2: Dynamic Multi-Document TOC Policy & Section Routing
+### Stage 2: Dynamic Constrained Candidate-Index Routing
 - **Files**:
+  - `retrieval-hierarchical.py` (`get_ranked_candidate_sections`, `route_query_to_toc`)
   - `hierarchical-processing/document_registry.py`
   - `hierarchical-processing/policies_manifest.json`
-  - `retrieval-hierarchical.py` (`route_query_to_tocs`)
-- **Mechanism**:
-  1. `DocumentRegistry` loads registered documents from `policies_manifest.json` and supports dynamic auto-discovery of newly embedded policies.
-  2. Generates unified compact TOC trees representing each registered policy's structure (e.g., `Cigna_ACDF`, `Cigna_Lumbar_Fusion`).
-  3. Uses fast routing LLM to select:
-     - **Target document key** (`policy`)
-     - **Scoped section IDs** (`toc_ids`, e.g., `["S7"]` for Lumbar Fusion with Decompression or `["S9.1"]` for ACDF Radiculopathy)
-  4. Supports manual CLI override via `--doc <doc_key>` to bypass routing for policy-specific testing.
+- **Robustness Architectural Principles**:
+  1. **Constrained Candidate-Index Selection**: Instead of asking an LLM to generate free-form TOC strings (which suffered from subword tokenizer transposition errors like `S38.5` vs `S3.58`), the prompt dynamically ranks and presents the top 6 candidate policy sections as numbered options:
+     ```
+     [1] Policy: Cigna_Lab_Management | Section: [S3.58] Prolaris
+     [2] Policy: Cigna_Lab_Management | Section: [S3.17] Decipher Prostate
+     ...
+     ```
+     The LLM selects only an integer index (`"selected_candidate": 1`) or `null`. The code maps the index to a verified `toc_id`. LLMs are never permitted to manufacture or format TOC ID strings.
+  2. **Multi-Signal Dynamic Candidate Pre-Ranking**:
+     - **Exact CPT Code Hits (+25.0 boost)**: Scans chunk texts across all registered policies for direct query CPT matches.
+     - **BM25 Semantic Text Relevance**: Pulls top chunk scores per section.
+     - **Lexical Title Overlap (+3.0 to +8.0 boost)**: Matches procedure terminology against TOC section titles across all policies.
+  3. **Canonical Ancestor Collapse (`canonical_parent`)**:
+     - In documents where PDF chapter headings repeat across subsequent pages (e.g. Lumbar Fusion `S5.2` repeating `CMM-609.2: Osteotomy`), Docling creates duplicate child nodes with minimal or 0 content.
+     - The pipeline automatically detects child nodes whose title duplicates an ancestor node and collapses them to the highest ancestor (`S5`), guaranteeing that scoped retrieval traverses the complete section hierarchy (`S5.1.1` PCO, `S5.1.2` Three-Column Osteotomy).
+  4. **Deterministic TOC ID Validator**:
+     - Confirms proposed `toc_id` exists in `flat_toc`.
+     - Automatically snaps partial prefixes or child nodes to verified canonical sections.
 
-### Stage 3: Scoped Hybrid Retrieval with Strict TOC Filtering
+### Stage 3: Scoped Hybrid Retrieval with Strict TOC Filtering & Self-Healing
 - **Files**:
   - `hybrid_search_hierarchical.py` (`scoped_search`)
-  - `hierarchical-processing/retrieve.py`
+  - `retrieval-hierarchical.py` (`retrieve_scoped_chunks`)
 - **Mechanism**:
-  1. **Authoritative Descendant Resolution**: Uses `get_descendant_toc_ids()` over the policy's `toc_tree` structure. Routing to a parent node (e.g., `S7`) automatically scopes retrieval to include all nested child conditions (`S7.1`, `S7.1.1` ... `S7.1.6`).
-  2. **Scoped Candidate Filtering**: BM25 and dense vector cosine similarity are calculated strictly within the scoped subset of chunks, eliminating false-positive matches from unrelated policy chapters.
-  3. **Reciprocal Rank Fusion (RRF)**:
-     $$RRF(d) = \frac{1}{60 + \text{rank}_{\text{dense}}(d)} + \frac{1}{60 + \text{rank}_{\text{bm25}}(d)}$$
-  4. **Sibling Condition Completion**: Automatically incorporates sibling clinical sub-conditions to guarantee criteria completeness.
+  1. **Authoritative Descendant Resolution**: Uses `get_descendant_toc_ids()` over the policy's `toc_tree` structure. Routing to a parent node (e.g., `S5` or `S7`) automatically scopes retrieval to include all nested child conditions.
+  2. **Canonical Ancestor Expansion**: If a candidate section was a child leaf sharing an ancestor title, both child and ancestor are queried to prevent stranding on placeholder headers.
+  3. **Scoped Candidate Filtering**: BM25 and dense vector cosine similarity are calculated strictly within the scoped subset of chunks, eliminating false-positive matches from unrelated policy chapters.
+  4. **Self-Healing Retry**: If Candidate #1 unexpectedly yields 0 chunks, Stage 3 automatically falls back to runner-up candidate sections before terminating.
+  5. **Sibling Condition Completion**: Automatically incorporates sibling clinical sub-conditions to guarantee criteria completeness.
 
-### Stage 4: Structured Clinical JSON Synthesis & Resilience
-- **File**: `retrieval-hierarchical.py`
+### Stage 4: Structured Clinical JSON Synthesis & Normalization
+- **File**: `retrieval-hierarchical.py` (`normalize_clinical_json`, `build_synthesis_prompt`)
 - **Mechanism**:
-  1. Constructs a structured synthesis prompt containing the retrieved context, prior authorization status, and explicit derivation instructions.
-  2. **Resilient LLM Execution**:
+  1. **Resilient LLM Execution**:
      - Primary: Groq API (`groq/compound-mini`, `llama-3.1-8b-instant`, `openai/gpt-oss-120b`).
-     - Automatic fallback: Local Ollama endpoint (`medgemma-1.5-4b-it-GGUF:Q8_0`).
-     - Max token budget set to 5,000 tokens to ensure complete generation without truncation.
-  3. **Multi-Tier JSON Extraction & Repair**:
+     - Includes exponential backoff (`time.sleep(1.5)`) on transient HTTP 429 rate limits.
+     - Automatic fallback: Local Ollama endpoint (`medgemma-1.5-4b-it-GGUF:Q8_0`) with explicit negative reasoning constraints.
+  2. **Investigational / Non-Covered Handling (Prompt Rule 8)**:
+     - For experimental or unproven tests with zero covered indications (e.g., DermTech `0089U`), the prompt explicitly instructs the LLM to output `"Medical necessity indications": []` and thoroughly document all exclusions and clinical trial requirements under `"Non-Indications"`.
+  3. **Multi-Layer JSON Repair & Schema Normalization**:
      - Strips reasoning/thinking tags (`<think>...</think>`).
      - Slices from the first opening brace `{`.
      - Cleans trailing commas and unclosed quotes using `json_repair`.
-  4. **Post-Processing & Validation**:
-     - Deduplicates hierarchical breadcrumbs in `Source` fields.
-     - Derives concrete clinical documents and non-indications without generic placeholders.
-     - Standardizes keys and persists output to `data/results_new/`.
+     - `normalize_clinical_json` provides case-insensitive key reconciliation (`non-indications`, `documentation required`, etc.) and guarantees all 8 required schema keys exist with default lists (`[]`).
 
 ---
 
